@@ -6,7 +6,7 @@
 
 ### Task Running
 
-This extension supports running npm scripts defined in the `package.json` as [tasks](https://code.visualstudio.com/docs/editor/tasks). Scripts with the name 'build', 'compile', or 'watch'
+Thi1111s extension supports running npm scripts defined in the `package.json` as [tasks](https://code.visualstudio.com/docs/editor/tasks). Scripts with the name 'build', 'compile', or 'watch'
 are treated as build tasks.
 
 To run scripts as tasks, use the **Tasks** menu.
