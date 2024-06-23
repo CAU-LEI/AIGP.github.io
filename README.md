@@ -1,3 +1,5 @@
+![ABGP](22769f7c39d349a1ac1d9fccf320f9fd.jpeg)
+
 # ABGP软件说明书目录
 
 1. [ABGP简介](#abgp简介)
