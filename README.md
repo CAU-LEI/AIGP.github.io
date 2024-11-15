@@ -1,81 +1,76 @@
 ![ABGP](ABGP.png)
+# ABGP Software Manual Directory
 
-# ABGP软件说明书目录
+[TOC]
 
-1. [ABGP简介](#abgp简介)
-2. [安装指南](#安装指南)
-3. [功能介绍](#功能介绍)
-    - [数据预处理](#数据预处理)
-    - [特征工程](#特征工程)
-    - [模型训练](#模型训练)
-    - [模型评估](#模型评估)
-    - [模型可解释性](#模型可解释性)
-4. [参数介绍](#参数介绍)
-5. [使用指南](#使用指南)
-    - [快速入手](#快速入手)
-    - [详细教程](#详细教程)
-    - [示例说明](#示例说明)
+- # 1. Introduction to ABGP
 
-## 1. ABGP简介
+  ------
 
-随着测序技术的发展和高通量基因型数据的产生，育种技术正由传统的“经验育种”逐步向“精准育种”转化。人工智能算法不需要预先的规则定义，通过数据和特征进行自主学习，擅长拟合数据中的非线性复杂关系，对于处理海量基因型数据更具有优势。将人工智能算法应用在基因组预测中，对于进一步提高重要表型育种值估计的准确性，加快遗传进展和育种进程具有重要意义。
+  With the advancement of sequencing technologies and the emergence of high-throughput genomic data, breeding practices are transitioning from traditional "empirical breeding" to "precision breeding". Artificial intelligence (AI) algorithms, which do not require predefined rules, excel at learning from data and features, fitting complex nonlinear relationships within the data. This capability gives them an edge in handling vast amounts of genomic data. The application of AI algorithms in genomic prediction is crucial for enhancing the accuracy of breeding value estimation for key phenotypes, accelerating genetic progress, and streamlining the breeding process.
 
-Artificial Intelligence Breeding Pipeline(ABGP)是一款集特征选择、模型构建、速度优化、参数调节、位点可解释性于一体的AI育种软件，可以处理多种监督学习条件下的数据，包括但不限于基因组学、转录组学、甲基化等数据。ABGP可以融合先验信息、场季效应、性别、批次等多种协变量信息，针对质量性状和数量性状，包含多种不同的AI算法模型，支持cpu、gpu运算的同时加入多进程、多线程、最优化迭代、网格搜索、麻雀搜索、SNP位点可解释性分析等模块。
+  Artificial Intelligence Breeding Pipeline (ABGP) is an AI breeding software that integrates feature selection, model building, speed optimization, parameter tuning, and locus interpretability. It can process data under various supervised learning conditions, including but not limited to genomics, transcriptomics, and methylation data. ABGP can incorporate prior information, seasonal effects, gender, batch, and other covariate information, and it encompasses a variety of AI algorithm models for both qualitative and quantitative traits. It supports CPU and GPU computations, along with multi-process, multi-threading, optimization iteration, grid search, sparrow search, and SNP locus interpretability analysis modules.
 
-整体具有以下特征：
+  The software features include:
 
-1. 大幅提升预测速度：ABGP支持数据读取加速和GPU模型训练加速，在处理大规模数据时表现尤为出色。
-2. 灵活性和适应性：ABGP方法可以处理不同类型的数据和任务，包括回归、分类以及具有复杂非线性关系的数据,包括但不限于基因组、转录组、代谢组数据。
-5. 非线性拟合优化:ABGP可以自动进行特征选择，并通过SHAP（SHapley Additive exPlanations）等方法评估特征重要性，提供对预测结果的深入理解和解释。
-6. 高性能和精度预测：通过使用先进的模型，可以显著提高预测的精度和性能。这些模型通过高效的梯度提升技术，能够在处理大规模数据和复杂模型时表现出色。
-7. 自动化调参：ABGP软件集成了网格搜索和智能算法进行自动化调参，确保模型在不同数据集上的最佳表现，相较于GBLUP方法的手动调参，效率更高。
-8. 协变量处理：ABGP可以直接处理数据中的分类变量，自动进行编码和处理，而传统GBLUP方法在处理分类变量时较为复杂，需要额外的预处理步骤。
+  1.大幅提升预测速度：ABGP supports accelerated data reading and GPU model training, which is particularly effective when dealing with large-scale data.
+  2.灵活性和适应性：ABGP methods can handle different types of data and tasks, including regression, classification, and data with complex nonlinear relationships, including but not limited to genomic, transcriptomic, and metabolomic data.
+  3.非线性拟合优化：ABGP can automatically perform feature selection and evaluate feature importance through methods such as SHAP (SHapley Additive exPlanations), providing an in-depth understanding and interpretation of prediction results.
+  4.高性能和精度预测：By using advanced models, the precision and performance of predictions can be significantly improved. These models demonstrate excellent performance in handling large-scale data and complex models through efficient gradient boosting techniques.
+  5.自动化调参：ABGP software integrates grid search and intelligent algorithms for automated parameter tuning, ensuring the best model performance on different datasets, which is more efficient than manual parameter tuning in the GBLUP method.
+  6.协变量处理：ABGP can directly process categorical variables in the data, automatically encoding and processing them, while traditional GBLUP methods are more complex when dealing with categorical variables, requiring additional preprocessing steps.
 
-此外，ABGP通过麻雀搜索等多种参数优化方法进一步提升预测准确性，可以根据SNP在模型中的权重挖掘与表型相关的SNP位点。通过多种方法评估SNP位点重要性，一般SNP位点的权重越大，与表型的相关性越强。通过SHAP理论进行模型可解释性的输出，包括自定义选择特征位点进行重要性排序、基于单样本、多样本与特征结合进行局部和全局性交互解释，并进行可视化展示等。用户可自定义不同特征及样本之间的交互关系进行进一步研究。建议用户将ABGP不同方法提供的各SNP的权重与GWAS结果对比参考，排除各自方法中的假阳性结果，提高可信度。
+  In addition, ABGP enhances prediction accuracy through various parameter optimization methods such as sparrow search and can mine SNP loci related to phenotypes based on the weight of SNPs in the model. By assessing the importance of SNP loci through various methods, generally, the greater the weight of the SNP locus, the stronger its correlation with the phenotype. The software outputs model interpretability through SHAP theory, including custom selection of feature loci for importance ranking, local and global interactive explanations based on single samples, multiple samples combined with features, and visualization display. Users can customize the interaction between different features and samples for further research. It is recommended that users compare the weights of various SNPs provided by different methods of ABGP with GWAS results for reference, to exclude false positive results from each method and increase credibility.
 
-ABGP在大数据时代，应对基因组数据分析需求方面展现了强大的优势，能够高效、准确地进行大规模数据的预测和分析。为AI育种和数字化提供了新的工具和软件平台。
+  ABGP has shown strong advantages in meeting the needs of genomic data analysis in the era of big data, capable of efficiently and accurately predicting and analyzing large-scale data. It provides new tools and software platforms for AI breeding and digitalization.
 
-**源代码地址：https://github.com/ABGP**
-**附加数据： https://github.com/ABGP/data**
-**联系我们：leiwei@cau.edu.cn***
+  **Source Code Address: [https://github.com/ABGP](https://github.com/ABGP)**  
+  **Additional Data: [https://github.com/ABGP/data](https://github.com/ABGP/data)**  
+  **Contact Us: leiwei@cau.edu.cn***
 
-* [ ] **注意：软件仅用于学术使用，商业使用需先联系我们。解释权归畜禽生物育种全国重点实验室所有**
+  - **Note: The software is for academic use only, commercial use requires prior contact with us. The right to interpretation belongs to the National Key Laboratory of Animal and Poultry Breeding**
 
+## 2. Installation Guide
 
+------
 
-## 2. 安装指南
+### Clone the Project Repository
 
-### 克隆项目仓库
+Clone the project's GitHub repository to your local machine. Open the terminal and execute the following command:
 
-克隆项目的GitHub仓库到本地机器上。打开终端并执行以下命令：
-
-```bash
+```shell
 git clone https://github.com/leiweiucas/ABGP
 cd ABGP
 ```
 
-### 创建虚拟环境
-为确保依赖项之间没有冲突，建议使用虚拟环境。可以使用 venv 或 conda 来创建虚拟环境。使用 venv 创建虚拟环境：
+### Create a Virtual Environment
 
-```bash
+To ensure there are no conflicts between dependencies, it is recommended to use a virtual environment. You can use venv or conda to create a virtual environment. Create a virtual environment using venv:
+
+```shell
 python3 -m venv venv
 source venv/bin/activate  # Linux/macOS
 venv\Scripts\activate  # Windows
 ```
-### 使用 conda 创建虚拟环境：
 
-```bash
+### Create a Virtual Environment with conda:
+
+```shell
 conda create --name ABGP_env python=3.8
 conda activate ABGP
 ```
-### 安装依赖项
-依赖项列在 requirements.txt 文件中。执行以下命令安装：
-```bash
+
+### Install Dependencies
+
+Dependencies are listed in the requirements.txt file. Execute the following command to install:
+
+```shell
 pip install -r requirements.txt
 ```
-requirements.txt 中具体包版本为：
 
-```bash
+Specific package versions in requirements.txt are:
+
+```shell
 pandas==1.3.3
 numpy==1.21.2
 scipy==1.7.1
@@ -87,453 +82,442 @@ phate==1.0.7
 shap==0.39.0
 joblib==1.1.0
 ```
-**plink安装**
-ABGP软件内置plink模块，下载plink软件后，在Linux或macOS上，编辑 ~/.bashrc 或 ~/.zshrc 文件：
-```bash
+
+**PLINK Installation** ABGP software has a built-in plink module. After downloading the plink software, on Linux or macOS, edit the ~/.bashrc or ~/.zshrc file:
+
+```shell
 export PATH=$PATH:/path/to/plink
 ```
-在Windows上，通过系统属性中的“环境变量”选项进行配置。
 
-## 3. 功能介绍
+On Windows, configure it through the "Environment Variables" option in System Properties.
 
-### 数据预处理
-程序的预处理模块支持对输入的基因型数据的基因型频率(次等位基因频率)、基因型缺失率、样本缺失率进行统计并以直方图的形式展示并输出。方便用户了解数据整体情况，制定后续的研究方法。
+# 3. Feature Introduction
 
-表型文件预处理中，会判断表型值是否有缺失，如果有缺失，会将缺失值对应的行和基因型相对应的样本自动进行删除。并对表型值进行分布直方图的可视化。
+------
 
-###  特征工程
-在基因型和表型数据的处理中，特征工程不仅可以有效减少数据维度，降低计算复杂度，还可以保留数据的主要信息。ABGP软件支持两种降维方法：PCA（主成分分析）和 PHATE（潜在拓扑保持嵌入）。
+### Data Preprocessing
 
-**PCA（Principal Component Analysis，主成分分析）**
-PCA是一种常用的降维技术，通过正交变换将高维数据映射到低维空间，保留数据中的主要信息。PCA的主要优点是能够降低数据的维度，同时尽量保留数据的方差信息，从而简化模型的复杂度，提高计算效率。
+The preprocessing module of the software supports statistics on the genotype frequency (minor allele frequency), genotype missing rate, and sample missing rate of the input genotypic data, and presents them in the form of histograms for output. This feature allows users to understand the overall status of the data and to devise subsequent research methods.
 
-**PHATE（Potential of Heat-diffusion for Affinity-based Transition Embedding，潜在拓扑保持嵌入）**
-PHATE是一种最新的降维技术，它无需先验分布，使用梯度下降和矩阵分解技术来保留数据的潜在几何结构和拓扑特征，通过使用数据点之间的几何距离信息来捕获局部和全局非线性结构。PHATE被设计用来处理数据点之间嘈杂的非线性关系。PHATE生成一个低维表示，它在数据集中同时保留本地和全局结构，因此您可以根据数据集中出现的单元之间关系的图进而形成对数据结构的全局认识。
+In the preprocessing of phenotypic files, the module checks for missing phenotypic values. If missing values are found, the corresponding rows and genotype samples are automatically deleted. Additionally, it visualizes the distribution histogram of phenotypic values.
 
-### 模型训练
-本软件支持多种机器学习模型，适用于质量性状和数量性状的预测。其中，质量性状共包含10种不同的机器学习模型，数量性状共包含11种不同的机器学习模型。ABGP所包含的训练方法分为4类，包含基于特征距离的非线性方法、线性方法、bagging\boosting类算法，其中在数量性状中，非线性方法为knn和svm，线性方法为LinearRegressionRidge RegressionElasticNet bagging方法为RF，boosting类算法包括梯度提升树，xgboost，catboost，lightgbm和catboost。在质量性状中，非线性方法为knn和svm，线性方法为逻辑回归 bagging方法为RF，决策树算法。boosting类算法包括梯度提升树，xgboost，catboost，lightgbm和catboost。
+### Feature Engineering
 
-用户可以根据具体需求选择合适的模型进行训练，并在训练过程中进行不同方法的参数优化以获得最佳性能。
+In the processing of genotype and phenotype data, feature engineering can effectively reduce data dimensions, decrease computational complexity, and retain key information from the data. The ABGP software supports two dimensionality reduction methods: PCA (Principal Component Analysis) and PHATE (Potential of Heat-diffusion for Affinity-based Transition Embedding).
 
-### 模型评估
-在ABGP中，对于质量性状，采用准确率作为评价。对于数量性状，采用预测值和真实值的皮尔逊相关系数作为评价标准。当使用交叉验证时，则采用教程验证的平均值作为准确性的评价标准。
+**PCA (Principal Component Analysis)** is a common dimensionality reduction technique that maps high-dimensional data to a low-dimensional space through orthogonal transformation, preserving the main information in the data. The main advantage of PCA is its ability to reduce data dimensions while retaining variance information, thereby simplifying model complexity and improving computational efficiency.
 
-### 模型可解释性
-在机器学习模型中，解释模型的预测结果对于理解模型行为和建立信任至关重要。SHAP（SHapley Additive exPlanations）是一种基于博弈论的方法，用于解释模型的输出。它通过计算每个特征对预测结果的贡献，提供全局和局部的解释能力。ABGP软件集成了SHAP中的多种功能，用于分析和解释模型的特征及样本的重要性，以及对表型的贡献。
+**PHATE (Potential of Heat-diffusion for Affinity-based Transition Embedding)** is a state-of-the-art dimensionality reduction technique that requires no prior distribution. It uses gradient descent and matrix factorization to preserve the latent geometric structure and topological features of the data. By leveraging geometric distance information between data points, it captures both local and global nonlinear structures. PHATE is designed to handle noisy nonlinear relationships between data points. It generates a low-dimensional representation that maintains both local and global structures within the dataset, allowing for a comprehensive understanding of data structure based on the graph of relationships between entities within the dataset.
 
-## 4. 参数介绍
-以下为ABGP中所有参数汇总：
-```bash
---geno: 输入特征数据文件的路径（必须）
---geno_sep: 输入特征数据文件的分隔符（必须）
---phe: 输入标签数据文件的路径（必须）
---phe_sep: 输入标签数据文件的分隔符（必须）
---phe_col_num: 标签数据所在的列号（必须）
---category_cols: 指定哪些列是分类变量（可选）
---type: 任务类型，sort（分类）或 regression（回归）（必须）
---dim_reduction: 降维方法，可选 None pca phate（可选）
---n_components: 降维后的维度数（可选）
---model: 选择的模型名称（可选）
---model_params: 模型参数，以 JSON 格式传递（可选）
---cv: 交叉验证折数（可选）
---train_size: 训练集占比（可选）
---ntest: 测试集大小（可选）
---process_x: 是否对特征数据进行预处理（可选）
---process_y: 是否对标签数据进行预处理（可选）
---grid: 是否使用网格搜索（可选）
---grid_model_params: 网格搜索的参数，以 JSON 格式传递（可选）
---ssa: 是否使用 SSA 搜索（可选）
---ssa_model_params: SSA 搜索的参数，以 JSON 格式传递（可选）
---all: 训练所有模型，可选 regression 或 sort（可选）
---shap: 计算并可视化 SHAP 值（可选）
---shap_beeswarm: 计算并可视化 SHAP 蜂群图（可选）
---shap_feature_heatmap计算并可视化 SHAP 热图（可选）
---shap_feature_waterfall计算并可视化 SHAP 瀑布图（可选）
---top_features: 指定 SHAP 图中显示的前 N 个特征数目（可选）
---output: 指定保存 SHAP 图像的路径（可选）
---model_path后面指定参考群训练好的模型参数文件。
+### Model Training
 
+The software supports a variety of machine learning models suitable for predicting both qualitative and quantitative traits. For qualitative traits, there are 10 different machine learning models, and for quantitative traits, there are 11 different machine learning models. The training methods included in ABGP are categorized into four types, including nonlinear methods based on feature distances, linear methods, and bagging/boosting algorithms. For quantitative traits, nonlinear methods include k-nearest neighbors (knn) and support vector machines (svm), linear methods include Linear Regression, Ridge Regression, and ElasticNet, and bagging methods include Random Forest (RF). Boosting algorithms include gradient boosting trees, xgboost, catboost, lightgbm, and catboost. For qualitative traits, nonlinear methods include knn and svm, linear methods include logistic regression, bagging methods include RF, and decision tree algorithms. Boosting algorithms include gradient boosting trees, xgboost, catboost, lightgbm, and catboost.
 
+Users can select the appropriate model for training based on specific needs and optimize parameters using various methods to achieve the best performance.
+
+### Model Evaluation
+
+In ABGP, for qualitative traits, accuracy is used as the evaluation metric. For quantitative traits, the Pearson correlation coefficient between predicted and actual values is used as the evaluation standard. When cross-validation is employed, the average value from the cross-validation is used as the accuracy evaluation standard.
+
+### Model Interpretability
+
+In machine learning models, explaining the prediction results is crucial for understanding model behavior and building trust. SHAP (SHapley Additive exPlanations) is a game-theoretic method for explaining model outputs. It calculates the contribution of each feature to the prediction result, providing both global and local interpretability. The ABGP software integrates various functions of SHAP to analyze and interpret the importance of model features and samples, as well as their contributions to phenotypes.
+
+# 4. Parameter Introduction
+
+------
+
+Below is a summary of all parameters in ABGP:
+
+```shell
+--geno: Path to the input feature data file (required)
+--geno_sep: Separator used in the input feature data file (required)
+--phe: Path to the input label data file (required)
+--phe_sep: Separator used in the input label data file (required)
+--phe_col_num: Column number where the label data is located (required)
+--category_cols: Specify which columns are categorical variables (optional)
+--type: Task type, sort (classification) or regression (regression) (required)
+--dim_reduction: Dimensionality reduction method, options are None, pca, phate (optional)
+--n_components: Number of dimensions after dimensionality reduction (optional)
+--model: Name of the model to be used (optional)
+--model_params: Model parameters passed in JSON format (optional)
+--cv: Number of folds for cross-validation (optional)
+--train_size: Proportion of the training set (optional)
+--ntest: Size of the test set (optional)
+--process_x: Whether to preprocess the feature data (optional)
+--process_y: Whether to preprocess the label data (optional)
+--grid: Whether to use grid search (optional)
+--grid_model_params: Parameters for grid search passed in JSON format (optional)
+--ssa: Whether to use SSA search (optional)
+--ssa_model_params: Parameters for SSA search passed in JSON format (optional)
+--all: Train all models, options are regression or sort (optional)
+--shap: Calculate and visualize SHAP values (optional)
+--shap_beeswarm: Calculate and visualize SHAP beeswarm plots (optional)
+--shap_feature_heatmap: Calculate and visualize SHAP heatmaps (optional)
+--shap_feature_waterfall: Calculate and visualize SHAP waterfall plots (optional)
+--top_features: Specify the number of top features to display in SHAP plots (optional)
+--output: Specify the path to save SHAP images (optional)
+--model_path: Specify the model parameter file from the reference group training.
 ```
 
-具体机器学习模型中的参数为：
+### For Qualitative Trait Classification Models:
 
-**对于质量形状的分类模型：**
+#### **KNeighborsClassifier**
 
-**KNeighborsClassifier**
+- n_neighbors: Number of neighbors (default is 5), controls the number of neighbors used for classification.
+- weights: Weight function (options are ‘uniform’, ‘distance’), defines the influence of each neighbor on the classification result.
+- algorithm: Method used to compute the nearest neighbors (options are ‘auto’, ‘ball_tree’, ‘kd_tree’, ‘brute’). leaf_size: Size of the leaf node when constructing the tree, affects the speed of building and querying.
+- p: Parameter for the distance metric, when p=1 it is the Manhattan distance, when p=2 it is the Euclidean distance.
 
-n_neighbors: 邻居数量（默认为 5），控制了分类的近邻数量。
-weights: 权重函数（可选 'uniform' 'distance'），定义了每个邻居对分类结果的影响。
-algorithm: 用于计算最近邻居的方法（可选 'auto' 'ball_tree' 'kd_tree' 'brute'）。
-leaf_size: 构造树时的叶子节点大小，影响构建和查询速度。
-p: 距离度量参数，当 p=1 时为曼哈顿距离，当 p=2 时为欧氏距离。
+#### **LogisticRegression**
 
-**LogisticRegression**
+- penalty: Type of penalty (options are ‘l1’, ‘l2’, ‘elasticnet’, ‘none’), defines the regularization method.
+- C: Regularization strength, the smaller the value, the stronger the regularization. solver: Optimization algorithm (options are ‘newton-cg’, ‘lbfgs’, ‘liblinear’, ‘sag’, ‘saga’).
+- max_iter: Maximum number of iterations, controls the number of iterations in the optimization process. class_weight: Class weights (options are ‘balanced’, None, or a dictionary), used to handle class imbalance problems.
 
-penalty: 惩罚类型（可选 'l1' 'l2' 'elasticnet' 'none'），定义了正则化方法。
-C: 正则化强度，值越小表示越强的正则化。
-solver: 优化算法（可选 'newton-cg' 'lbfgs' 'liblinear' 'sag' 'saga'）。
-max_iter: 最大迭代次数，控制优化过程的迭代次数。
-class_weight: 类别权重（可选 'balanced' None 或字典），用于处理类别不平衡问题。
+#### **DecisionTreeClassifier**
 
-**DecisionTreeClassifier**
+- criterion: Measure of split quality (options are ‘gini’, ‘entropy’).
+- splitter: Splitting strategy (options are ‘best’, ‘random’).
+- max_depth: Maximum depth of the tree, limits tree growth to prevent overfitting. min_samples_split: Minimum number of samples required to split an internal node.
+- min_samples_leaf: Minimum number of samples required at a leaf node.
 
-criterion: 分裂质量的衡量标准（可选 'gini' 'entropy'）。
-splitter: 分裂策略（可选 'best' 'random'）。
-max_depth: 树的最大深度，限制树的生长以防止过拟合。
-min_samples_split: 分裂一个内部节点所需的最小样本数。
-min_samples_leaf: 叶子节点所需的最小样本数。
+#### **XGBClassifier**
 
-**XGBClassifier**
+- n_estimators: Number of trees (iterations).
+- learning_rate: Learning rate, controls the step size at each iteration.
+- max_depth: Maximum depth of the trees, prevents overfitting.
+- subsample: Proportion of samples to be used for each iteration, prevents overfitting.
+- colsample_bytree: Proportion of features to be used for each tree.
 
-n_estimators: 树的数量（迭代次数）。
-learning_rate: 学习率，控制每次迭代的权重步长。
-max_depth: 树的最大深度，防止过拟合。
-subsample: 每次迭代前随机选择的样本比例，防止过拟合。
-colsample_bytree: 构建每棵树时随机选择的特征比例。
+#### **CatBoostClassifier**
 
-**CatBoostClassifier**
+- iterations: Number of iterations (number of trees).
+- learning_rate: Learning rate, controls the step size at each iteration.
+- depth: Depth of the trees, affects the complexity of the model.
+- l2_leaf_reg: L2 regularization coefficient, prevents overfitting.
+- border_count: Number of borders for numerical features, used for binning.
 
-iterations: 训练的迭代次数（树的数量）。
-learning_rate: 学习率，控制每次迭代的步长。
-depth: 树的深度，影响模型的复杂性。
-l2_leaf_reg: L2 正则化系数，防止过拟合。
-border_count: 数值特征的边界数量，用于分箱。
+#### **SVC**
 
-**SVC**
+- C: Regularization parameter, the larger the value, the greater the penalty for misclassification.
+- kernel: Type of kernel function (options are ‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’).
+- degree: Degree of the polynomial kernel function, only effective when kernel=’poly’.
+- gamma: Kernel coefficient, controls the influence range of RBF, poly, and sigmoid.
+- class_weight: Class weights, used to handle class imbalance problems.
 
-C: 正则化参数，值越大表示对误分类的惩罚越大。
-kernel: 核函数类型（可选 'linear' 'poly' 'rbf' 'sigmoid'）。
-degree: 多项式核函数的度，仅在 kernel='poly' 时有效。
-gamma: 核函数系数，控制 RBF poly 和 sigmoid 的影响范围。
-class_weight: 类别权重，用于处理类别不平衡问题。
-GradientBoostingClassifier
+#### **GradientBoostingClassifier**
 
-n_estimators: 弱学习器（树）的数量。
-learning_rate: 学习率，缩小每个弱学习器的贡献。
-max_depth: 每个弱学习器的最大深度。
-min_samples_split: 分裂一个内部节点所需的最小样本数。
-min_samples_leaf: 叶子节点所需的最小样本数。
+- n_estimators: Number of weak learners (trees).
+- learning_rate: Learning rate, reduces the contribution of each weak learner.
+- max_depth: Maximum depth of each weak learner.
+- min_samples_split: Minimum number of samples required to split an internal node.
+- min_samples_leaf: Minimum number of samples required at a leaf node.
 
-**LGBMClassifier**
+#### **LGBMClassifier**
 
-num_leaves: 树中叶子的最大数目。
-learning_rate: 学习率，控制每次迭代的步长。
-n_estimators: 树的数量（迭代次数）。
-max_depth: 树的最大深度，防止过拟合。
-feature_fraction: 每次迭代中使用特征的比例。
+- num_leaves: Maximum number of leaves in the tree.
+- learning_rate: Learning rate, controls the step size at each iteration.
+- n_estimators: Number of trees (iterations).
+- max_depth: Maximum depth of the trees, prevents overfitting.
+- feature_fraction: Proportion of features used in each iteration.
 
-**AdaBoostClassifier**
+#### **AdaBoostClassifier**
 
-n_estimators: 基础学习器的数量。
-learning_rate: 学习率，缩小每个基础学习器的贡献。
-algorithm: 提升算法（可选 'SAMME' 'SAMME.R'）。
-base_estimator: 基础学习器。
-random_state: 随机数种子，用于保证结果的可重复性。
+- n_estimators: Number of base learners.
+- learning_rate: Learning rate, reduces the contribution of each base learner.
+- algorithm: Boosting algorithm (options are ‘SAMME’, ‘SAMME.R’).
+- base_estimator: Base learner.
+- random_state: Random number seed for reproducibility.
 
-**RandomForestClassifier**
+#### **RandomForestClassifier**
 
-n_estimators: 森林中的树的数量。
-max_features: 分裂时考虑的最大特征数。
-max_depth: 树的最大深度。
-min_samples_split: 分裂一个内部节点所需的最小样本数。
-min_samples_leaf: 叶子节点所需的最小样本数。
+- n_estimators: Number of trees in the forest.
+- max_features: Maximum number of features to consider when splitting.
+- max_depth: Maximum depth of the trees.
+- min_samples_split: Minimum number of samples required to split an internal node.
+- min_samples_leaf: Minimum number of samples required at a leaf node.
 
+### For Quantitative Trait Regression Models:
 
+#### **LinearRegression**
 
+- fit_intercept: Whether to calculate the intercept (default is True).
+- normalize: Whether to standardize the features before regression (default is False).
+- copy_X: Whether to copy the X matrix (default is True).
+- n_jobs: Number of CPUs to use for computation (default is None, indicates one job).
+- positive: Whether to force regression coefficients to be positive (default is False).
 
-**对于数量形状的回归模型：**
+#### **BayesianRidge**
 
-**LinearRegression**
+- n_iter: Maximum number of iterations (default is 300).
+- tol: Convergence threshold (default is 1e-3).
+- alpha_1: Shape parameter for the Gamma distribution prior over the alpha parameter (default is 1e-6).
+- alpha_2: Inverse scale parameter for the Gamma distribution prior over the alpha parameter (default is 1e-6).
+- lambda_1: Shape parameter for the Gamma distribution prior over the lambda parameter (default is 1e-6).
 
-fit_intercept: 是否计算截距项（默认为 True）。
-normalize: 是否在回归前标准化特征（默认为 False）。
-copy_X: 是否复制 X 矩阵（默认为 True）。
-n_jobs: 用于计算的 CPU 核数（默认为 None，表示使用一个核）。
-positive: 是否强制回归系数为正（默认为 False）。
+#### **ElasticNet**
 
-**BayesianRidge**
+- alpha: Regularization strength (default is 1.0).
+- l1_ratio: ElasticNet mixing parameter, range is [0, 1] (default is 0.5).
+- fit_intercept: Whether to calculate the intercept (default is True).
+- normalize: Whether to standardize the features before regression (default is False).
+- max_iter: Maximum number of iterations (default is 1000).
 
-n_iter: 最大迭代次数（默认为 300）。
-tol: 收敛阈值（默认为 1e-3）。
-alpha_1: shape parameter for the Gamma distribution prior over the alpha parameter（默认为 1e-6）。
-alpha_2: Inverse scale parameter for the Gamma distribution prior over the alpha parameter（默认为 1e-6）。
-lambda_1: Shape parameter for the Gamma distribution prior over the lambda parameter（默认为 1e-6）。
+#### **SVR**
 
-**ElasticNet**
+- kernel: Type of kernel function (options are ‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’).
+- degree: Degree of the polynomial kernel function, only effective when kernel=’poly’ (default is 3).
+- gamma: Kernel coefficient, controls the influence range of RBF, poly, and sigmoid (default is ‘scale’).
+- C: Regularization parameter, the larger the value, the greater the penalty for errors (default is 1.0).
+- epsilon: The margin within which no penalty is associated with errors (default is 0.1).
 
-alpha: 常规化强度（默认为 1.0）。
-l1_ratio: ElasticNet 混合参数，范围在 [0 1] 之间（默认为 0.5）。
-fit_intercept: 是否计算截距项（默认为 True）。
-normalize: 是否在回归前标准化特征（默认为 False）。
-max_iter: 最大迭代次数（默认为 1000）。
+#### **KNeighborsRegressor**
 
+- n_neighbors: Number of neighbors (default is 5), controls the number of neighbors used for regression.
+- weights: Weight function (options are ‘uniform’, ‘distance’), defines the influence of each neighbor on the regression result.
+- algorithm: Method used to compute the nearest neighbors (options are ‘auto’, ‘ball_tree’, ‘kd_tree’, ‘brute’).
+- leaf_size: Size of the leaf node when constructing the tree, affects the speed of building and querying. p: Parameter for the distance metric, when p=1 it is the Manhattan distance, when p=2 it is the Euclidean distance.
 
-**SVR**
+#### **RandomForestRegressor**
 
-kernel: 核函数类型（可选 'linear' 'poly' 'rbf' 'sigmoid'）。
-degree: 多项式核函数的度，仅在 kernel='poly' 时有效（默认为 3）。
-gamma: 核函数系数，控制 RBF poly 和 sigmoid 的影响范围（默认为 'scale'）。
-C: 正则化参数，值越大表示对误差的惩罚越大（默认为 1.0）。
-epsilon: 在 epsilon-tube 内的误差不受惩罚（默认为 0.1）。
+- n_estimators: Number of trees in the forest (default is 100).
+- criterion: Measure of split quality (default is ‘mse’, options are ‘mse’, ‘mae’).
+- max_depth: Maximum depth of the trees (default is None).
+- min_samples_split: Minimum number of samples required to split an internal node (default is 2).
+- min_samples_leaf: Minimum number of samples required at a leaf node (default is 1).
 
-**KNeighborsRegressor**
+#### **AdaBoostRegressor**
 
-n_neighbors: 邻居数量（默认为 5），控制了回归的近邻数量。
-weights: 权重函数（可选 'uniform' 'distance'），定义了每个邻居对回归结果的影响。
-algorithm: 用于计算最近邻居的方法（可选 'auto' 'ball_tree' 'kd_tree' 'brute'）。
-leaf_size: 构造树时的叶子节点大小，影响构建和查询速度。
-p: 距离度量参数，当 p=1 时为曼哈顿距离，当 p=2 时为欧氏距离。
+- n_estimators: Number of base learners (default is 50).
+- learning_rate: Learning rate, reduces the contribution of each base learner (default is 1.0).
+- loss: Loss function used in the boosting algorithm (options are ‘linear’, ‘square’, ‘exponential’).
+- base_estimator: Base learner (default is DecisionTreeRegressor).
+- random_state: Random number seed for reproducibility.
 
-**RandomForestRegressor**
+#### **GradientBoostingRegressor**
 
-n_estimators: 森林中的树的数量（默认为 100）。
-criterion: 分裂质量的衡量标准（默认为 'mse'，可选 'mse' 'mae'）。
-max_depth: 树的最大深度（默认为 None）。
-min_samples_split: 分裂一个内部节点所需的最小样本数（默认为 2）。
-min_samples_leaf: 叶子节点所需的最小样本数（默认为 1）。
+- n_estimators: Number of weak learners (trees) (default is 100).
+- learning_rate: Learning rate, reduces the contribution of each weak learner (default is 0.1).
+- max_depth: Maximum depth of each weak learner (default is 3).
+- min_samples_split: Minimum number of samples required to split an internal node (default is 2).
+- min_samples_leaf: Minimum number of samples required at a leaf node (default is 1).
 
-**AdaBoostRegressor**
+#### **XGBRegressor**
 
-n_estimators: 基础学习器的数量（默认为 50）。
-learning_rate: 学习率，缩小每个基础学习器的贡献（默认为 1.0）。
-loss: 提升算法中的损失函数（可选 'linear' 'square' 'exponential'）。
-base_estimator: 基础学习器（默认为 DecisionTreeRegressor）。
-random_state: 随机数种子，用于保证结果的可重复性。
+- n_estimators: Number of trees (iterations) (default is 100).
+- learning_rate: Learning rate, controls the step size at each iteration (default is 0.1).
+- max_depth: Maximum depth of the trees, prevents overfitting (default is 6).
+- subsample: Proportion of samples to be used for each iteration, prevents overfitting (default is 1).
+- colsample_bytree: Proportion of features to be used for each tree (default is 1).
 
-**GradientBoostingRegressor**
+#### **CatBoostRegressor**
 
-n_estimators: 弱学习器（树）的数量（默认为 100）。
-learning_rate: 学习率，缩小每个弱学习器的贡献（默认为 0.1）。
-max_depth: 每个弱学习器的最大深度（默认为 3）。
-min_samples_split: 分裂一个内部节点所需的最小样本数（默认为 2）。
-min_samples_leaf: 叶子节点所需的最小样本数（默认为 1）。
+- iterations: Number of iterations (number of trees) (default is 1000).
+- learning_rate: Learning rate, reduces the contribution of each iteration (default is 0.03).
+- depth: Depth of the trees, affects the complexity of the model (default is 6).
+- l2_leaf_reg: L2 regularization coefficient, prevents overfitting (default is 3).
+- border_count: Number of borders for numerical features, used for binning (default is 254).
 
-**XGBRegressor**
+#### **LGBMRegressor**
 
-n_estimators: 树的数量（迭代次数）（默认为 100）。
-learning_rate: 学习率，控制每次迭代的权重步长（默认为 0.1）。
-max_depth: 树的最大深度，防止过拟合（默认为 6）。
-subsample: 每次迭代前随机选择的样本比例，防止过拟合（默认为 1）。
-colsample_bytree: 构建每棵树时随机选择的特征比例（默认为 1）。
+- num_leaves: Maximum number of leaves in one tree (default is 31).
+- learning_rate: Learning rate, controls the step size at each iteration (default is 0.1).
+- n_estimators: Number of trees (iterations) (default is 100).
+- max_depth: Maximum depth of the trees, prevents overfitting (default is -1, which means no limit).
+- feature_fraction: Proportion of features to be used in each iteration (default is 1.0).
 
-**CatBoostRegressor**
+All detailed parameters for each model can be found in the Scikit-Learn documentation. Users can train the models with different parameters according to various machine learning algorithms. If specific parameters are not specified, the model training will be conducted using the default parameters.
 
-iterations: 训练的迭代次数（树的数量）（默认为 1000）。
-learning_rate: 学习率，控制每次迭代的步长（默认为 0.03）。
-depth: 树的深度，影响模型的复杂性（默认为 6）。
-l2_leaf_reg: L2 正则化系数，防止过拟合（默认为 3）。
-border_count: 数值特征的边界数量，用于分箱（默认为 254）。
+# 5. User Guide
 
-**LGBMRegressor**
+------
 
-num_leaves: 树中叶子的最大数目（默认为 31）。
-learning_rate: 学习率，控制每次迭代的步长（默认为 0.1）。
-n_estimators: 树的数量（迭代次数）（默认为 100）。
-max_depth: 树的最大深度，防止过拟合（默认为 -1，表示不限深度）。
-feature_fraction: 每次迭代中使用特征的比例（默认为 1.0）。
-各个模型的所有详细参数，详见Scikit-Learn文档
-用户可根据不同的机器学习算法自己搭配不同的参数进行训练，若不指定特定参数，则按默认参数进行模型训练。
+## Quick Start
 
-## 5. 使用指南
-### 快速入手
-基因型文件支持（vcf、ped格式的文件），对于基因组文件，我们建议用户自行进行基因型填充。当准备好填充后的基因型文件时，将所有表型值和协变量等信息放在同一个文件中，如下表所示，第一、二列为固定效应，第三列第四列为表型值。
-并指定分隔符。
+Genotype files support formats such as vcf and ped. For genomic files, it is recommended that users perform genotype imputation themselves. When the imputed genotype files are ready, place all phenotypic values and covariates in the same file as shown in the table below, with the first and second columns as fixed effects and the third and fourth columns as phenotypic values. Specify the separator.
 
+| 20   | 0    | 160  | 119  |
+| ---- | ---- | ---- | ---- |
+| 20   | 0    | 161  | 119  |
+| 20   | 0    | 161  | 117  |
+| 20   | 0    | 161  | 110  |
+| 20   | 0    | 165  | 101  |
+| 20   | 0    | 157  | 130  |
+| 20   | 0    | 155  | 121  |
+| 20   | 0    | 154  | 124  |
+| 20   | 0    | 160  | 124  |
+| 20   | 0    | 158  | 103  |
+| 20   | 0    | 164  | 112  |
+| 20   | 0    | 166  | 85   |
+| 20   | 0    | 158  | 112  |
+| 20   | 0    | 160  | 127  |
+| 20   | 0    | 156  | 96   |
 
+Taking the genotype file as `test_geno.ped` and the phenotype file as `test_phe`, the third column of the `test_phe` file is the true phenotypic value for model evaluation. At this point, `--geno` is followed by the location of the genotype file, `--phe` is followed by the location of the phenotype file, `--x_sep` is followed by the separator of the genotype file, and `--y_sep` is followed by the separator in the phenotype file. `--y_col_num` specifies the column number of the phenotype file. When cross-validation is not used, the proportion of the sample training population and the validation population is specified by `--train_size`. When the trait is a quantitative trait, specify `--type` as `regression`, and when it is a qualitative trait, specify `--type` as `sort`. `--model` is followed by the method of the model, and all methods are detailed in Section 4. When using the `LinearRegression` method, and using the third column as the training phenotypic value, the command is as follows:
 
-| 20 | 0  | 160 | 119 |
-|----|----|-----|-----|
-| 20 | 0  | 161 | 119 |
-| 20 | 0  | 161 | 117 |
-| 20 | 0  | 161 | 110 |
-| 20 | 0  | 165 | 101 |
-| 20 | 0  | 157 | 130 |
-| 20 | 0  | 155 | 121 |
-| 20 | 0  | 154 | 124 |
-| 20 | 0  | 160 | 124 |
-| 20 | 0  | 158 | 103 |
-| 20 | 0  | 164 | 112 |
-| 20 | 0  | 166 | 85  |
-| 20 | 0  | 158 | 112 |
-| 20 | 0  | 160 | 127 |
-| 20 | 0  | 156 | 96  |
-
-
-
-
-以基因型文件为 test_geno.ped 表型文件为 test_phe 文件为例，test_phe 文件第三列为表型真值，进行模型的评估。此时， --geno 后加基因型文件的位置，--phe 后加表型文件的位置，--x_sep 后指定基因型文件的分隔符，--y_sep 后指定表型文件中的分隔符。--y_col_num 后指定表型文件的列数。当不使用交叉验证时，通过 train_size 指定样本训练群体和验证群体的比例。当性状为数量性状时，指定 --type 后为 regression 当为质量性状时，--type 后为 sort。--model 后面加模型的方法，所有方法详见第四部分。当使用 LinearRegression 方法时，且以第三列作为训练表型值时，命令如下。
-
-```bash
+```shell
 ABGP train.py --geno data/test_geno.ped --x_sep \t --phe data/test_phe.txt --y_sep \s --y_col_num 3 --type regression --model LinearRegression --train_size 0.8
 ```
-当使用 test_phe 文件中的第一列、第二列作为协变量时，--category_cols 后面加 12，指定固定效应的列数，如多列则用空格分开。命令如下：
-```bash
+
+When using the first and second columns of the `test_phe` file as covariates, `--cateogry_cols` is followed by `12`, specifying the column number of the fixed effects, such as multiple columns are separated by spaces. The command is as follows:
+
+```shell
 ABGP train.py --geno data/test_geno.ped --x_sep \t --phe data/test_phe.txt --y_sep \s --y_col_num 3 --type regression --model LinearRegression --category_cols 12
 ```
-###  详细教程
 
-#### 读取数据
---x: 输入特征数据文件的路径
---y: 输入标签数据文件的路径
-参数 --x_sep 和 --y_sep 用于指定基因型文件和表型文件的分隔符。使用时，固定效应和表型性状放在同一个文件当中，并人为选择分隔符。如果设置了 --category_cols，则将指定的列为固定效应变量，如有多个，则用逗号进行分隔。--y_col_num 后指定表型值的列索引。--category_cols: 指定固定效应的列索引。
+### Detailed Tutorial
 
-#### 基因型数据预处理
-基因型数据预处理模块的功能包括：提取指定样本ID、SNPID的基因型数据，统计并直方图的形式展示SNP缺失率、杂合率，基因型重编码等。为程序下游分析提供数据及可接受的文件格式。目前ABGP支持的基因型文件输入格式有 ped、vcf、txt 格式，若为 ped 和 vcf 格式，只需 plink 标准格式输入即可。若为 txt 格式，则需按以下格式进行输入。每行为一个样本，列为分型后的SNP位点。无索引列和头文件行。参数 --process_x ，对基因型文件进行预处理。
+#### Reading Data
 
-#### 表型数据预处理
-参数 --process_y 对表型文件进行预处理，对于数量性状而言，会判断表型值是否有缺失，如果有缺失，会将缺失值对应的行和基因型相对应的样本自动进行删除。并对表型值进行分布直方图的可视化。
+`--x`: Path to the input feature data file `--y`: Path to the input label data file. Parameters `--x_sep` and `--y_sep` are used to specify the separators for the genotype and phenotype files. When used, fixed effects and phenotypic traits are placed in the same file, and a separator is chosen. If `--cateogry_cols` is set, the specified columns are treated as fixed effect variables, separated by commas if multiple. `--y_col_num` specifies the column index of the phenotypic value. `--cateogry_cols`: Specifies the column index of fixed effect variables.
 
-#### 特征工程降维
-支持 pca、phate 两种方法进行基因型数据的降维：
+#### Genotype Data Preprocessing
 
-bash
---dim_reduction pca  --n_components 20
---dim_reduction phate --n_components 20
---dim_reduction 后加降维的方法：phate 或 pca
---n_components 后加降维的成分 n
+The genotype data preprocessing module includes functions such as extracting genotype data for specified sample IDs and SNP IDs, displaying SNP missing rates and heterozygosity rates in histogram form, and genotype re-encoding. It provides data and acceptable file formats for downstream analysis of the program. Currently, ABGP supports genotype file inputs in ped, vcf, and txt formats. If in ped and vcf formats, standard plink format input is required. If in txt format, input must follow the format below. Each line represents a sample, and columns represent typed SNP loci. There are no index columns or header rows. Parameter `--process_x` is used to preprocess the genotype file.
 
-#### 构建模型
+#### Phenotype Data Preprocessing
 
-模型训练模块包含多种不同的AI算法。
+Parameter `--process_y` is used for preprocessing the phenotype file. For quantitative traits, it checks for missing phenotypic values, and if missing, it automatically deletes the corresponding rows and samples of the genotype. It also visualizes the distribution histogram of phenotypic values.
 
-根据 --type 参数选择回归模型或分类模型。sort（分类）或 regression（回归）
+#### Feature Engineering Dimensionality Reduction
 
-使用 --model 指定的模型进行训练。对于质量性状，后面方法可接：
+Supports `pca` and `phate` methods for dimensionality reduction of genotype data:
 
-**KNeighborsClassifier
-LogisticRegression
-DecisionTreeClassifier
-XGBClassifier
-CatBoostClassifier
-SVC
-GradientBoostingClassifier
-LGBMClassifier
-AdaBoostClassifier
-RandomForestClassifier**
+```bash
+--dim_reduction pca --n_components 20 --dim_reduction phate --n_components 20 --dim_reduction followed by the dimensionality reduction method: phate or pca --n_components followed by the number of components n
+```
 
-对于数量性状，可接：
+#### Model Building
 
-**LinearRegression
-BayesianRidge
-ElasticNet
-Ridge
-SVR
-KNeighborsRegressor
-RandomForestRegressor
-AdaBoostRegressor
-GradientBoostingRegressor
-XGBRegressor
-CatBoostRegressor
-LGBMRegressor**
+The model training module includes a variety of different AI algorithms.
 
---model_params 后接模型参数，以 JSON 格式传递，当使用任何一种模型进行训练时，均可自由指定训练参数，并以 JSON 格式进行传递。
+Based on the `--type` parameter, choose regression or classification models. `sort` (classification) or `regression` (regression).
 
---cv 根据 --cv 设置的交叉验证折数进行模型训练和评估。如果未设置 --cv，则只进行一次训练。则需指定 --train_size 或 --ntest，且 --train_size 和 --ntest 只需选择一个参数，当设置 --train_size 为 0.8 时，则参考群体中的4/5用于训练，1/5用于评估预测准确性。若设置 --ntest，则为前 n 个样本为训练群体。
+Use the model specified by `--model` for training. For qualitative traits, the following methods can be used:
 
-如果使用网格搜索（--grid），则需使用 --grid 参数，根据 --grid_model_params 指定的参数进行网格搜索调参。
+- **KNeighborsClassifier**
+- **LogisticRegression**
+- **DecisionTreeClassifier**
+- **XGBClassifier**
+- **CatBoostClassifier**
+- **SVC**
+- **GradientBoostingClassifier**
+- **LGBMClassifier**
+- **AdaBoostClassifier**
+- **RandomForestClassifier**
 
-如果使用 SSA 搜索（--ssa），则需使用 --ssa_model_params 参数，根据 --ssa_model_params 指定的参数进行 SSA 搜索调参。
+For quantitative traits, the following can be used:
 
---all 对模型所有方法进行训练，当使用自己数据集时，使用此参数可以自动测试所有模型，并输出结果中效果最好的模型方法和预测准确性。
+- **LinearRegression**
+- **BayesianRidge**
+- **ElasticNet Ridge**
+- **SVR**
+- **KNeighborsRegressor**
+- **RandomForestRegressor**
+- **AdaBoostRegressor**
+- **GradientBoostingRegressor**
+- **XGBRegressor**
+- **CatBoostRegressor**
+- **LGBMRegressor**
 
-如果设置了 --all，则需附加 --type 参数，后接 sort 或 regression，可完成对数量性状或质量性状所有模型的预测准确性的比较，并输出平均准确性效果最好的模型和准确性。
+`--model_params` followed by model parameters, passed in JSON format. When training with any model, you can freely specify training parameters and pass them in JSON format.
 
+`--cv` based on the number of folds set by `--cv` for model training and evaluation. If `--cv` is not set, only one training is performed. You need to specify `--train_size` or `--ntest`, and you only need to choose one of `--train_size` and `--ntest`. When `--train_size` is set to 0.8, 4/5 of the reference population is used for training and 1/5 is used for evaluating prediction accuracy. If `--ntest` is set, the first n samples are used as the training population.
 
-#### 候选群预测
-ABGP软件结合实际育种现场需求，加入了候选群预测及排名工作。当参考群群体进行准确性评估后，会生成 .m 文件的后缀。此时，可以利用基于参考群训练完成的权重，对候选群体进行预测。此时，--geno 后面需接入候选群体的路径文件，--model_path 后面指定参考群训练好的模型参数文件。
+If using grid search (`--Grid`), you need to use the `--Grid` parameter, and grid search tuning will be performed according to the parameters specified by `--Grid_model_params`.
 
-#### 特征重要性分析
-如果设置了 --shap 或 --shap_beeswarm，则计算并可视化 SHAP 的各种类型图。
+If using SSA search (`--ssa`), you need to use the `--ssa_model_params` parameter, and SSA search tuning will be performed according to the parameters specified by `--ssa_model_params`.
 
-根据 --top_features 指定的特征数量，生成特征重要性图或蜂群图，并保存到 --output 指定的路径。
+`--all` to train all models, when using your own dataset, this parameter can automatically test all models and output the best-performing model method and prediction accuracy.
 
+If `--all` is set, you need to add the `--type` parameter, followed by `sort` or `regression`, to complete the comparison of prediction accuracy for all models for quantitative or qualitative traits and output the average accuracy of the best-performing model.
 
-###  示例说明
-以基因型文件和表型文件为示例，共计1000个参考群体，这里展示了文件中的前10个样本。
+#### Candidate Group Prediction
 
+ABGP software, combined with the actual breeding field requirements, has added candidate group prediction and ranking work. After the reference group population has been evaluated for prediction accuracy, a file with the suffix `.m` will be generated. At this point, you can use the weights trained in the reference group to predict the candidate group. At this time, `--geno` should be followed by the path to the candidate group's genotype file, and `--model_path` should specify the model parameter file trained with the reference group.
 
-假设基因型文件如下表所示，这里以plink常用的ped文件为例,文件命名为geno.ped.
+#### Feature Importance Analysis
+
+If `--shap` or `--shap_beeswarm` is set, calculate and visualize the various types of SHAP diagrams.
+
+According to the number of features specified by `--top_features`, generate feature importance diagrams or beeswarm diagrams, and save them to the path specified by `--output`.
+
+### Example Description
+
+Taking the genotype file and phenotype file as an example, a total of 1000 reference populations are illustrated here, with the first 10 samples of the file displayed. Let's assume the genotype file is as shown in the table below, using the ped file commonly used by PLINK as an example, named `geno.ped`.
 
 | Index | Col1  | Col2  | Col3 | Col4 | Col5 | Col6 | Col7 | Col8 | Col9 | Col10 | Col11 | Col12 | Col13 | Col14 | Col15 | Col16 | Col17 | Col18 | Col19 | Col20 | Col21 | Col22 | Col23 | Col24 | Col25 | Col26 | Col27 | Col28 | Col29 | Col30 |
-|-------|-------|-------|------|------|------|------|------|------|------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|
-| 1     | 14107 | 14107 | 0    | 0    | 0    | -9   | T    | T    | T    | A     | G     | A     | A     | C     | C     | C     | C     | C     | G     | T     | C     | G     | G     | C     | C     | A     | A     | A     | A     | G     | 
-| 2     | 14110 | 14110 | 0    | 0    | 0    | -9   | T    | C    | T    | A     | G     | A     | A     | C     | C     | C     | C     | T     | C     | C     | G     | T     | C     | G     | G     | C     | C     | A     | A     | A     | 
-| 3     | 14119 | 14119 | 0    | 0    | 0    | -9   | T    | C    | T    | A     | G     | A     | A     | C     | C     | C     | C     | C     | G     | T     | C     | G     | G     | C     | C     | A     | A     | A     | A     | G     | 
-| 4     | 14120 | 14120 | 0    | 0    | 0    | -9   | T    | C    | T    | A     | G     | A     | A     | C     | C     | C     | C     | C     | G     | T     | G     | G     | C     | C     | A     | A     | A     | A     | G     | G     | 
-| 5     | 14121 | 14121 | 0    | 0    | 0    | -9   | T    | C    | T    | A     | G     | A     | A     | C     | C     | C     | C     | T     | T     | C     | G     | G     | G     | C     | C     | A     | A     | A     | A     | G     | 
+| ----- | ----- | ----- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
+| 1     | 14107 | 14107 | 0    | 0    | 0    | -9   | T    | T    | T    | A     | G     | A     | A     | C     | C     | C     | C     | C     | G     | T     | C     | G     | G     | C     | C     | A     | A     | A     | A     | G     |
+| 2     | 14110 | 14110 | 0    | 0    | 0    | -9   | T    | C    | T    | A     | G     | A     | A     | C     | C     | C     | C     | T     | C     | C     | G     | T     | C     | G     | G     | C     | C     | A     | A     | A     |
+| 3     | 14119 | 14119 | 0    | 0    | 0    | -9   | T    | C    | T    | A     | G     | A     | A     | C     | C     | C     | C     | C     | G     | T     | C     | G     | G     | C     | C     | A     | A     | A     | A     | G     |
+| 4     | 14120 | 14120 | 0    | 0    | 0    | -9   | T    | C    | T    | A     | G     | A     | A     | C     | C     | C     | C     | C     | G     | T     | G     | G     | C     | C     | A     | A     | A     | A     | G     | G     |
+| 5     | 14121 | 14121 | 0    | 0    | 0    | -9   | T    | C    | T    | A     | G     | A     | A     | C     | C     | C     | C     | T     | T     | C     | G     | G     | G     | C     | C     | A     | A     | A     | A     | G     |
 | 6     | 14123 | 14123 | 0    | 0    | 0    | -9   | C    | T    | T    | C     | T     | A     | G     | A     | A     | C     | C     | C     | T     | C     | C     | G     | T     | G     | G     | C     | C     | A     | A     | A     |
-| 7     | 14125 | 14125 | 0    | 0    | 0    | -9   | T    | T    | T    | A     | A     | A     | C     | C     | C     | T     | C     | C     | C     | C     | G     | T     | G     | G     | C     | C     | A     | A     | A     | A     | 
-| 8     | 14126 | 14126 | 0    | 0    | 0    | -9   | T    | T    | T    | A     | G     | A     | A     | C     | C     | C     | C     | C     | T     | T     | C     | G     | T     | G     | G     | C     | C     | A     | A     | A     | 
+| 7     | 14125 | 14125 | 0    | 0    | 0    | -9   | T    | T    | T    | A     | A     | A     | C     | C     | C     | T     | C     | C     | C     | C     | G     | T     | G     | G     | C     | C     | A     | A     | A     | A     |
+| 8     | 14126 | 14126 | 0    | 0    | 0    | -9   | T    | T    | T    | A     | G     | A     | A     | C     | C     | C     | C     | C     | T     | T     | C     | G     | T     | G     | G     | C     | C     | A     | A     | A     |
 | 9     | 14134 | 14134 | 0    | 0    | 0    | -9   | T    | C    | T    | A     | G     | A     | A     | C     | C     | C     | C     | C     | T     | T     | C     | G     | T     | G     | G     | C     | C     | A     | A     | A     |
-| 10    | 14135 | 14135 | 0    | 0    | 0    | -9   | T    | T    | T    | A     | G     | A     | A     | C     | C     | C     | C     | T     | C     | C     | G     | T     | G     | G     | C     | C     | A     | A     | A     | A     | 
+| 10    | 14135 | 14135 | 0    | 0    | 0    | -9   | T    | T    | T    | A     | G     | A     | A     | C     | C     | C     | C     | T     | C     | C     | G     | T     | G     | G     | C     | C     | A     | A     | A     | A     |
 
+The phenotype file is as shown in the table below, named `phe.txt`. Columns A and B are covariates, and columns C and D are different phenotypic values.
 
-表型文件如下表所示,命名为phe.txt.
-A、B列是协变量，C,D列是不同的表型值。
+| Index | A    | B    | C    | D    |
+| ----- | ---- | ---- | ---- | ---- |
+| 1     | 20   | 0    | 160  | 119  |
+| 2     | 20   | 0    | 161  | 119  |
+| 3     | 20   | 0    | 161  | 117  |
+| 4     | 20   | 0    | 161  | 110  |
+| 5     | 20   | 0    | 165  | 101  |
+| 6     | 20   | 0    | 157  | 130  |
+| 7     | 20   | 0    | 155  | 121  |
+| 8     | 20   | 0    | 154  | 124  |
+| 9     | 20   | 0    | 160  | 124  |
+| 10    | 20   | 0    | 158  | 103  |
 
+Usage Examples
 
-| Index | A  | B  | C   | D   |
-| ----- | -- | -- | --- | --- |
-| 1     | 20 | 0  | 160 | 119 |
-| 2     | 20 | 0  | 161 | 119 |
-| 3     | 20 | 0  | 161 | 117 |
-| 4     | 20 | 0  | 161 | 110 |
-| 5     | 20 | 0  | 165 | 101 |
-| 6     | 20 | 0  | 157 | 130 |
-| 7     | 20 | 0  | 155 | 121 |
-| 8     | 20 | 0  | 154 | 124 |
-| 9     | 20 | 0  | 160 | 124 |
-| 10    | 20 | 0  | 158 | 103 |
+**1.Train a regression model:**
 
-
-使用示例
-**1：训练回归模型：**
-```
-abgp --geno data/geno.ped  --phe data/phe.csv --y_sep , --y_col_num 3 --type regression --model LinearRegression -train_size 0.8
+```shell
+abgp --geno data/geno.ped --phe data/phe.csv --y_sep , --y_col_num 3 --type regression --model LinearRegression --train_size 0.8
 ```
 
+**2. Train a classification model and use PCA for dimensionality reduction (n=10):**
 
-**2.训练分类模型，并使用PCA进行降维(n=10)：**
-
-```
-abgp --geno data/geno.ped --x_sep , --y data/phe.csv --y_sep , 
---y_col_num 3 --type sort --dim_reduction pca --n_components 10 --model 
-LogisticRegression --train_size 0.8
+```shell
+abgp --geno data/geno.ped --x_sep , --y data/phe.csv --y_sep , --y_col_num 3 --type sort --dim_reduction pca --n_components 10 --model LogisticRegression --train_size 0.8
 ```
 
+**3. Perform grid search and five-fold cross-validation:**
 
-**3.网格搜索并进行五折交叉验证：**
-
-```
-abgp --geno data/geno.ped , --phe data/phe.csv --y_sep , --y_col_num 3 --type regression --model LinearRegression --grid true --grid_model_params 
-'{"fit_intercept": [true, false]}' --cv 5
+```shell
+abgp --geno data/geno.ped --phe data/phe.csv --y_sep , --y_col_num 3 --type regression --model LinearRegression --grid true --grid_model_params '{"fit_intercept": [true, false]}' --cv 5
 ```
 
+**4. In qualitative traits, handle covariates and train a CatBoost model:**
 
-**4.在质量性状中，处理协变量并训练catboost模型：**
-
+```shell
+abgp --geno data/geno.ped --phe data/phe.csv --y_sep , --y_col_num 3 --type sort --model CatBoostClassifier --category_cols 1,2 --cv 5
 ```
-abgp --geno data/geno.ped  --phe data/phe.csv --y_sep , --y_col_num 3 --type sort --model CatBoostClassifier --category_cols 1,2 --cv 5
-```
 
-**5.在数量性状中，计算并保存 SHAP 值和蜂群图，取排名前10的特征，并指定输出路径到shap_outputs文件夹:**
-````
+**5. In quantitative traits, calculate and save SHAP values and beeswarm plots, take the top 10 features, and specify the output path to the shap_outputs folder:**
+
+```shell
 abgp --geno data/geno.ped --phe data/phe.csv --y_sep , --y_col_num 3 --type regression --model LGBMRegressor --shap --shap_beeswarm --top_features 10 --output shap_outputs/ --cv 5
-````
-
-**6.一次性训练所有模型，输出效果最好的模型的名称和对应的准确性。当表型为数量性状时，--type 后加regression,当表型为质量性状时，--type后加sort:**
-
 ```
+
+**6. Train all models at once and output the name of the best-performing model and its corresponding accuracy. When the phenotype is a quantitative trait, add `regression` after `--type`, and when it is a qualitative trait, add `sort`:**
+
+```shell
 abgp --geno data/geno.ped --phe data/phe.csv --y_sep , --y_col_num 3 --all --type regression --shap --shap_beeswarm --top_features 50 --output shap_outputs/ --cv 5
 ```
 
-**7.在参考群评估完预测准确性后，需在候选群体中进行候选群体的预测。
-此时--geno 后接候选群的基因型文件，--model_path后指定参考群中不同算法训练好的模型权重。此时无需指定表型列，若需加入协变量，则指定表型文件中协变量的列数:此时输出候选群体中的预测结果。**
+**7. After evaluating the prediction accuracy in the reference population, predict the candidate population. At this point, `--geno` is followed by the genotype file of the candidate population, and `--model_path` specifies the model weights trained with the reference population. There is no need to specify the phenotype column at this time; if covariates are to be included, specify the column numbers of the covariates in the phenotype file. The output will be the predicted results for the candidate population.**
 
-````python
-abgp predict.py --geno data/geno.ped -phe data/phe.csv --y_sep , 
---category_cols 1,2 --model_pathcheckpoins/LinearRegression_general_20231027.m 
-````
+```shell
+abgp predict.py --geno data/geno.ped -phe data/phe.csv --y_sep , --category_cols 1,2 --model_path checkpoints/LinearRegression_general_20231027.m
+```
+
 
 
