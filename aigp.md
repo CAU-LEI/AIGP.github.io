@@ -1,14 +1,14 @@
-shen# AIGP Software Manual Directory
+#### AIGP: An interpretable Artificial Intelligence Genomic Prediction framework
 
-[TOC]
+
 ![AIGP](AIGP.png)
 
 
 # AIGP Software Manual Directory
 
-[TOC]
 
-- # 1. Introduction to AIGP
+
+# 1. Introduction to AIGP
 
   ------
 
@@ -19,23 +19,28 @@ shen# AIGP Software Manual Directory
   The software features include:
 
   1.**Significant Improvement in Prediction Speed**:AIGP supports accelerated data reading and GPU model training, which is particularly effective when dealing with large-scale data.
+  
   2.**Flexibility and Adaptability**:AIGP methods can handle different types of data and tasks, including regression, classification, and data with complex nonlinear relationships, including but not limited to genomic, transcriptomic, and metabolomic data.
+  
   3.**Nonlinear Fitting Optimization**:AIGP can automatically perform feature selection and evaluate feature importance through methods such as SHAP (SHapley Additive exPlanations), providing an in-depth understanding and interpretation of prediction results.
+  
   4.**High Performance and Precision Prediction**:By using advanced models, the precision and performance of predictions can be significantly improved. These models demonstrate excellent performance in handling large-scale data and complex models through efficient gradient boosting techniques.
+  
   5.**Automated Hyperparameter Tuning**:AIGP software integrates grid search and intelligent algorithms for automated parameter tuning, ensuring the best model performance on different datasets, which is more efficient than manual parameter tuning in the GBLUP method.
+  
   6.**Covariate Handling**:AIGP can directly process categorical variables in the data, automatically encoding and processing them, while traditional GBLUP methods are more complex when dealing with categorical variables, requiring additional preprocessing steps.
 
   In addition, AIGP enhances prediction accuracy through various parameter optimization methods such as sparrow search and can mine SNP loci related to phenotypes based on the weight of SNPs in the model. By assessing the importance of SNP loci through various methods, generally, the greater the weight of the SNP locus, the stronger its correlation with the phenotype. The software outputs model interpretability through SHAP theory, including custom selection of feature loci for importance ranking, local and global interactive explanations based on single samples, multiple samples combined with features, and visualization display. Users can customize the interaction between different features and samples for further research. It is recommended that users compare the weights of various SNPs provided by different methods of AIGP with GWAS results for reference, to exclude false positive results from each method and increase credibility.
 
   AIGP has shown strong advantages in meeting the needs of genomic data analysis in the era of big data, capable of efficiently and accurately predicting and analyzing large-scale data. It provides new tools and software platforms for AI breeding and digitalization.
 
-  **Source Code Address: [https://github.com/AIGP](https://github.com/AIGP)**  
-  **Additional Data: [https://github.com/AIGP/data](https://github.com/AIGP/data)**  
+  **Source Code Address: [https://github.com/CAU-LEI/AIGP]**  
+  **Additional Data: [https://github.com/CAU-LEI/AIGP/data](https://github.com/CAU-LEI/AIGP/data)**  
   **Contact Us: leiwei@cau.edu.cn***
 
   - **Note: The software is for academic use only, commercial use requires prior contact with us. The right to interpretation belongs to the National Key Laboratory of Animal and Poultry Breeding**
 
-## 2. Installation Guide
+# 2. Installation Guide
 
 ------
 
@@ -44,7 +49,7 @@ shen# AIGP Software Manual Directory
 Clone the project's GitHub repository to your local machine. Open the terminal and execute the following command:
 
 ```shell
-git clone https://github.com/leiweiucas/AIGP
+git clone https://github.com/CAU-LEI/AIGP/data
 cd AIGP
 ```
 
@@ -96,73 +101,121 @@ export PATH=$PATH:/path/to/plink
 
 On Windows, configure it through the "Environment Variables" option in System Properties.
 
-# 3. Feature Introduction
+# 3. Major function
+
+
+### Automatic Data Preprocessing  
+- Automatically identifies genotype file formats (`.txt`, `.ped`, `.vcf`) and processes file conversion.  
+- Automatically detects phenotype label columns and supports cleaning missing or invalid values.  
+
+### Statistical Parameter Calculation  
+- Computes genotype data parameters such as missing rate, allele frequency, and minor allele frequency (MAF) via parameter options.  
+- Calculates phenotype data metrics, including mean and standard deviation, and automatically generates phenotype distribution plots.  
+
+### Multiple Dimensionality Reduction Methods  
+- Integrates **PCA** and **PHATE** for dimensionality reduction.  
+- Reduces noise and computational complexity for high-dimensional data.  
+
+### Multiple Machine Learning Models  
+- Supports various machine learning models and accounts for fixed effects such as covariates.  
+
+### Hyperparameter Tuning and Optimization  
+- Integrates **Grid Search** and **SSA (Sparrow Search Algorithm, pseudo-implemented)** for hyperparameter tuning.  
+- Supports **multithreading** for parallel computation.  
+
+### Model Evaluation and Interpretation  
+- **Classification Tasks**: Uses **accuracy** as the evaluation metric.  
+- **Regression Tasks**: Uses **Pearson correlation coefficient** between predicted and actual values.  
+- Supports **cross-validation** and outputs individual fold scores along with the average score.  
+- Integrates **SHAP analysis module** for model interpretation, supporting visualizations such as:  
+  - Beeswarm plots  
+  - Heatmaps  
+  - Waterfall plots  
+  - Custom selection of the top N important features.  
+
+### Feature Importance Output  
+- Built-in **feature importance analysis**, allowing users to generate **feature importance plots** and corresponding **CSV files**.  
+
+### Candidate Population Prediction  
+- After evaluating model accuracy on the reference population, trained model weights can be used to predict candidate population data.  
+- Requires only a **pre-trained model file** and **candidate population data**.  
+
+### CPU/GPU Training Support  
+- Allows users to choose **CPU or GPU** for model training via parameter settings.  
+
+
+
+# 4. Pipeline Introduction
 
 ------
 
 ### Data Preprocessing
 
-The preprocessing module of the software supports statistics on the genotype frequency (minor allele frequency), genotype missing rate, and sample missing rate of the input genotypic data, and presents them in the form of histograms for output. This feature allows users to understand the overall status of the data and to devise subsequent research methods.
+- The preprocessing module of the software supports statistics on the genotype frequency (minor allele frequency), genotype missing rate, and sample missing rate of the input genotypic data, and presents them in the form of histograms for output. This feature allows users to understand the overall status of the data and to devise subsequent research methods.
 
-In the preprocessing of phenotypic files, the module checks for missing phenotypic values. If missing values are found, the corresponding rows and genotype samples are automatically deleted. Additionally, it visualizes the distribution histogram of phenotypic values.
+- In the preprocessing of phenotypic files, the module checks for missing phenotypic values. If missing values are found, the corresponding rows and genotype samples are automatically deleted. Additionally, it visualizes the distribution histogram of phenotypic values.
 
 ### Feature Engineering
 
-In the processing of genotype and phenotype data, feature engineering can effectively reduce data dimensions, decrease computational complexity, and retain key information from the data. The AIGP software supports two dimensionality reduction methods: PCA (Principal Component Analysis) and PHATE (Potential of Heat-diffusion for Affinity-based Transition Embedding).
+- In the processing of genotype and phenotype data, feature engineering can effectively reduce data dimensions, decrease computational complexity, and retain key information from the data. The AIGP software supports two dimensionality reduction methods: PCA (Principal Component Analysis) and PHATE (Potential of Heat-diffusion for Affinity-based Transition Embedding).
 
-**PCA (Principal Component Analysis)** is a common dimensionality reduction technique that maps high-dimensional data to a low-dimensional space through orthogonal transformation, preserving the main information in the data. The main advantage of PCA is its ability to reduce data dimensions while retaining variance information, thereby simplifying model complexity and improving computational efficiency.
+- **PCA (Principal Component Analysis)** is a common dimensionality reduction technique that maps high-dimensional data to a low-dimensional space through orthogonal transformation, preserving the main information in the data. The main advantage of PCA is its ability to reduce data dimensions while retaining variance information, thereby simplifying model complexity and improving computational efficiency.
 
-**PHATE (Potential of Heat-diffusion for Affinity-based Transition Embedding)** is a state-of-the-art dimensionality reduction technique that requires no prior distribution. It uses gradient descent and matrix factorization to preserve the latent geometric structure and topological features of the data. By leveraging geometric distance information between data points, it captures both local and global nonlinear structures. PHATE is designed to handle noisy nonlinear relationships between data points. It generates a low-dimensional representation that maintains both local and global structures within the dataset, allowing for a comprehensive understanding of data structure based on the graph of relationships between entities within the dataset.
+- **PHATE (Potential of Heat-diffusion for Affinity-based Transition Embedding)** is a state-of-the-art dimensionality reduction technique that requires no prior distribution. It uses gradient descent and matrix factorization to preserve the latent geometric structure and topological features of the data. By leveraging geometric distance information between data points, it captures both local and global nonlinear structures. PHATE is designed to handle noisy nonlinear relationships between data points. It generates a low-dimensional representation that maintains both local and global structures within the dataset, allowing for a comprehensive understanding of data structure based on the graph of relationships between entities within the dataset.
 
 ### Model Training
 
-The software supports a variety of machine learning models suitable for predicting both qualitative and quantitative traits. For qualitative traits, there are 10 different machine learning models, and for quantitative traits, there are 11 different machine learning models. The training methods included in AIGP are categorized into four types, including nonlinear methods based on feature distances, linear methods, and bagging/boosting algorithms. For quantitative traits, nonlinear methods include k-nearest neighbors (knn) and support vector machines (svm), linear methods include Linear Regression, Ridge Regression, and ElasticNet, and bagging methods include Random Forest (RF). Boosting algorithms include gradient boosting trees, xgboost, catboost, lightgbm, and catboost. For qualitative traits, nonlinear methods include knn and svm, linear methods include logistic regression, bagging methods include RF, and decision tree algorithms. Boosting algorithms include gradient boosting trees, xgboost, catboost, lightgbm, and catboost.
+- The software supports a variety of machine learning models suitable for predicting both qualitative and quantitative traits. All machine learning methods in AIGP are categorized into four major groups: Ordinary Least Squares (OLS) regression, nonlinear methods, Bagging, and Boosting, encompassing a total of 13 models.  For quantitative traits, nonlinear methods include k-nearest neighbors (knn) and support vector machines (svm), linear methods include Linear Regression, Ridge Regression, and ElasticNet, and bagging methods include Random Forest (RF). Boosting algorithms include gradient boosting trees, xgboost, catboost, lightgbm, and catboost. For qualitative traits, nonlinear methods include knn and svm, linear methods include logistic regression, bagging methods include RF, and decision tree algorithms. Boosting algorithms include gradient boosting trees, xgboost, catboost, lightgbm, and catboost.
 
 Users can select the appropriate model for training based on specific needs and optimize parameters using various methods to achieve the best performance.
 
 ### Model Evaluation
 
-In AIGP, for qualitative traits, accuracy is used as the evaluation metric. For quantitative traits, the Pearson correlation coefficient between predicted and actual values is used as the evaluation standard. When cross-validation is employed, the average value from the cross-validation is used as the accuracy evaluation standard.
+- In AIGP, for qualitative traits, accuracy is used as the evaluation metric. For quantitative traits, the Pearson correlation coefficient between predicted and actual values is used as the evaluation standard. When cross-validation is employed, the average value from the cross-validation is used as the accuracy evaluation standard.
 
 ### Model Interpretability
 
-In machine learning models, explaining the prediction results is crucial for understanding model behavior and building trust. SHAP (SHapley Additive exPlanations) is a game-theoretic method for explaining model outputs. It calculates the contribution of each feature to the prediction result, providing both global and local interpretability. The AIGP software integrates various functions of SHAP to analyze and interpret the importance of model features and samples, as well as their contributions to phenotypes.
+- In machine learning models, explaining the prediction results is crucial for understanding model behavior and building trust. SHAP (SHapley Additive exPlanations) is a game-theoretic method for explaining model outputs. It calculates the contribution of each feature to the prediction result, providing both global and local interpretability. The AIGP software integrates various functions of SHAP to analyze and interpret the importance of model features and samples, as well as their contributions to phenotypes.
 
-# 4. Parameter Introduction
+
+# 5. Parameter Introduction
 
 ------
 
 Below is a summary of all parameters in AIGP:
 
 ```shell
---geno: Path to the input feature data file (required)
---geno_sep: Separator used in the input feature data file (required)
---phe: Path to the input label data file (required)
---phe_sep: Separator used in the input label data file (required)
---phe_col_num: Column number where the label data is located (required)
---category_cols: Specify which columns are categorical variables (optional)
---type: Task type, sort (classification) or regression (regression) (required)
+--geno: Path to the genotype data file. Supported formats include `txt`, `.ped`, and `.vcf`. For `.ped` or `.vcf` formats, the program will call `plink` to convert the data.  (required)
+--geno_sep: Separator for the genotype data file. Commonly used separators for `txt` files include `"\t"` (tab) or other delimiters. The default is a comma. (required)
+--phe:Path to the phenotype data file. This file must contain a header and include at least one phenotype (label) column, along with optional covariate columns.  
+ (required)
+--phe_sep: Separator for the phenotype data file. The default is a comma. It can be adjusted based on the data format, such as space or tab.  (required)
+--phe_col_num:The column index (0-indexed) of the phenotype label. If not specified, the program will auto-detect it (e.g., by searching for columns containing `"phenotype"` or `"trait"`, or selecting the first numerical column).   (required)
+--category_cols: Specifies which columns are covariates (fixed-effect variables). Multiple columns should be separated by commas, e.g., `--category_cols 1,2`.   (optional)
+--type: Task type, sort (classification) or regression (regression) In regression tasks, samples with `0`, `NA`, or empty values in the phenotype data will be removed. Classification tasks allow `0` values.  (required)
 --dim_reduction: Dimensionality reduction method, options are None, pca, phate (optional)
 --n_components: Number of dimensions after dimensionality reduction (optional)
 --model: Name of the model to be used (optional)
 --model_params: Model parameters passed in JSON format (optional)
---cv: Number of folds for cross-validation (optional)
---train_size: Proportion of the training set (optional)
---ntest: Size of the test set (optional)
---process_x: Whether to preprocess the feature data (optional)
---process_y: Whether to preprocess the label data (optional)
---grid: Whether to use grid search (optional)
---grid_model_params: Parameters for grid search passed in JSON format (optional)
---ssa: Whether to use SSA search (optional)
---ssa_model_params: Parameters for SSA search passed in JSON format (optional)
---all: Train all models, options are regression or sort (optional)
---shap: Calculate and visualize SHAP values (optional)
---shap_beeswarm: Calculate and visualize SHAP beeswarm plots (optional)
---shap_feature_heatmap: Calculate and visualize SHAP heatmaps (optional)
---shap_feature_waterfall: Calculate and visualize SHAP waterfall plots (optional)
---top_features: Specify the number of top features to display in SHAP plots (optional)
---output: Specify the path to save SHAP images (optional)
---model_path: Specify the model parameter file from the reference group training.
+--cv: Number of cross-validation folds. If specified, the program will evaluate model performance using cross-validation and output fold scores along with the average score. (optional)
+--train_size:Proportion of data used for training. For example, 0.8 means 80% of the samples will be used for training, and the rest for testing. (optional)
+--ntest: Number of training samples (i.e., the first n samples are used for training). Mutually exclusive with --train_size.(optional)
+--grid: Enables Grid Search for hyperparameter tuning. Must be used with --grid_model_params. (optional)
+--grid_model_params: Grid search parameters, provided in JSON format, specifying the parameter search space. Example:{"fit_intercept": [true, false], "C": [1.0, 100]} (optional)
+--ssa: Enables SSA (Sparrow Search Algorithm) for hyperparameter tuning. Currently a pseudo-implementation. Supports setting search iterations and parameter search space, used with --ssa_model_params. (optional)
+--ssa_model_params: SSA search parameters, provided in JSON format. Example:{"iterations": 10, "param_grid": {"C": [0.1, 1.0, 10]}} (optional)
+--shap: Enables SHAP analysis for model interpretation. (optional)
+--shap_beeswarm: Generates a SHAP beeswarm plot. Must be used with --shap. (optional)
+--shap_feature_heatmap: Generates a SHAP feature heatmap. Must be used with --shap. (optional)
+--shap_feature_waterfall: Generates a SHAP waterfall plot (for a single sample). Must be used with --shap. (optional)
+--top_features: Specifies the number of top features to display in SHAP visualizations. (optional)
+--output: Path to save SHAP plots. (optional)
+--model_path: Path to a pre-trained model file, used for candidate population prediction.
+--geno_cal：Computes genotype data statistics (e.g., missing rate, allele frequency, MAF). Results are saved as a CSV file (geno_stats.csv).
+--phe_cal：Computes phenotype data statistics (e.g., mean, standard deviation) and generates a phenotype distribution plot (phe_distribution.png).
+--importance：Outputs feature importance after model training. Supports PNG and CSV output formats (only for models with built-in feature importance attributes such as feature_importances_ or coef_).
+--n_jobs：Number of parallel computing threads used for GridSearchCV, cross-validation, and SSA search. Default is 1.
+--gpu：Enables GPU training (if the model supports GPU acceleration). The default is CPU.
 ```
 
 ### For Qualitative Trait Classification Models:
@@ -334,13 +387,13 @@ Below is a summary of all parameters in AIGP:
 
 All detailed parameters for each model can be found in the Scikit-Learn documentation. Users can train the models with different parameters according to various machine learning algorithms. If specific parameters are not specified, the model training will be conducted using the default parameters.
 
-# 5. User Guide
+# 6. User Guide
 
 ------
 
 ## Quick Start
 
-Genotype files support formats such as vcf and ped. For genomic files, it is recommended that users perform genotype imputation themselves. When the imputed genotype files are ready, place all phenotypic values and covariates in the same file as shown in the table below, with the first and second columns as fixed effects and the third and fourth columns as phenotypic values. Specify the separator.
+- Genotype files support formats such as vcf and ped. For genomic files, it is recommended that users perform genotype imputation themselves. When the imputed genotype files are ready, place all phenotypic values and covariates in the same file as shown in the table below, with the first and second columns as fixed effects and the third and fourth columns as phenotypic values. Specify the separator.
 
 | 20   | 0    | 160  | 119  |
 | ---- | ---- | ---- | ---- |
@@ -359,7 +412,7 @@ Genotype files support formats such as vcf and ped. For genomic files, it is rec
 | 20   | 0    | 160  | 127  |
 | 20   | 0    | 156  | 96   |
 
-Taking the genotype file as `test_geno.ped` and the phenotype file as `test_phe`, the third column of the `test_phe` file is the true phenotypic value for model evaluation. At this point, `--geno` is followed by the location of the genotype file, `--phe` is followed by the location of the phenotype file, `--x_sep` is followed by the separator of the genotype file, and `--y_sep` is followed by the separator in the phenotype file. `--y_col_num` specifies the column number of the phenotype file. When cross-validation is not used, the proportion of the sample training population and the validation population is specified by `--train_size`. When the trait is a quantitative trait, specify `--type` as `regression`, and when it is a qualitative trait, specify `--type` as `sort`. `--model` is followed by the method of the model, and all methods are detailed in Section 4. When using the `LinearRegression` method, and using the third column as the training phenotypic value, the command is as follows:
+- Taking the genotype file as `test_geno.ped` and the phenotype file as `test_phe`, the third column of the `test_phe` file is the true phenotypic value for model evaluation. At this point, `--geno` is followed by the location of the genotype file, `--phe` is followed by the location of the phenotype file, `--x_sep` is followed by the separator of the genotype file, and `--y_sep` is followed by the separator in the phenotype file. `--y_col_num` specifies the column number of the phenotype file. When cross-validation is not used, the proportion of the sample training population and the validation population is specified by `--train_size`. When the trait is a quantitative trait, specify `--type` as `regression`, and when it is a qualitative trait, specify `--type` as `sort`. `--model` is followed by the method of the model, and all methods are detailed in Section 4. When using the `LinearRegression` method, and using the third column as the training phenotypic value, the command is as follows:
 
 ```shell
 AIGP train.py --geno data/test_geno.ped --x_sep \t --phe data/test_phe.txt --y_sep \s --y_col_num 3 --type regression --model LinearRegression --train_size 0.8
@@ -375,19 +428,19 @@ AIGP train.py --geno data/test_geno.ped --x_sep \t --phe data/test_phe.txt --y_s
 
 #### Reading Data
 
-`--x`: Path to the input feature data file `--y`: Path to the input label data file. Parameters `--x_sep` and `--y_sep` are used to specify the separators for the genotype and phenotype files. When used, fixed effects and phenotypic traits are placed in the same file, and a separator is chosen. If `--cateogry_cols` is set, the specified columns are treated as fixed effect variables, separated by commas if multiple. `--y_col_num` specifies the column index of the phenotypic value. `--cateogry_cols`: Specifies the column index of fixed effect variables.
+- `--x`: Path to the input feature data file `--y`: Path to the input label data file. Parameters `--x_sep` and `--y_sep` are used to specify the separators for the genotype and phenotype files. When used, fixed effects and phenotypic traits are placed in the same file, and a separator is chosen. If `--cateogry_cols` is set, the specified columns are treated as fixed effect variables, separated by commas if multiple. `--y_col_num` specifies the column index of the phenotypic value. `--cateogry_cols`: Specifies the column index of fixed effect variables.
 
 #### Genotype Data Preprocessing
 
-The genotype data preprocessing module includes functions such as extracting genotype data for specified sample IDs and SNP IDs, displaying SNP missing rates and heterozygosity rates in histogram form, and genotype re-encoding. It provides data and acceptable file formats for downstream analysis of the program. Currently, AIGP supports genotype file inputs in ped, vcf, and txt formats. If in ped and vcf formats, standard plink format input is required. If in txt format, input must follow the format below. Each line represents a sample, and columns represent typed SNP loci. There are no index columns or header rows. Parameter `--process_x` is used to preprocess the genotype file.
+- The genotype data preprocessing module includes functions such as extracting genotype data for specified sample IDs and SNP IDs, displaying SNP missing rates and heterozygosity rates in histogram form, and genotype re-encoding. It provides data and acceptable file formats for downstream analysis of the program. Currently, AIGP supports genotype file inputs in ped, vcf, and txt formats. If in ped and vcf formats, standard plink format input is required. If in txt format, input must follow the format below. Each line represents a sample, and columns represent typed SNP loci. There are no index columns or header rows. Parameter `--process_x` is used to preprocess the genotype file.
 
 #### Phenotype Data Preprocessing
 
-Parameter `--process_y` is used for preprocessing the phenotype file. For quantitative traits, it checks for missing phenotypic values, and if missing, it automatically deletes the corresponding rows and samples of the genotype. It also visualizes the distribution histogram of phenotypic values.
+- Parameter `--process_y` is used for preprocessing the phenotype file. For quantitative traits, it checks for missing phenotypic values, and if missing, it automatically deletes the corresponding rows and samples of the genotype. It also visualizes the distribution histogram of phenotypic values.
 
 #### Feature Engineering Dimensionality Reduction
 
-Supports `pca` and `phate` methods for dimensionality reduction of genotype data:
+- Supports `pca` and `phate` methods for dimensionality reduction of genotype data:
 
 ```bash
 --dim_reduction pca --n_components 20 --dim_reduction phate --n_components 20 --dim_reduction followed by the dimensionality reduction method: phate or pca --n_components followed by the number of components n
@@ -395,7 +448,7 @@ Supports `pca` and `phate` methods for dimensionality reduction of genotype data
 
 #### Model Building
 
-The model training module includes a variety of different AI algorithms.
+- The model training module includes a variety of different AI algorithms.
 
 Based on the `--type` parameter, choose regression or classification models. `sort` (classification) or `regression` (regression).
 
@@ -434,9 +487,7 @@ If using grid search (`--Grid`), you need to use the `--Grid` parameter, and gri
 
 If using SSA search (`--ssa`), you need to use the `--ssa_model_params` parameter, and SSA search tuning will be performed according to the parameters specified by `--ssa_model_params`.
 
-`--all` to train all models, when using your own dataset, this parameter can automatically test all models and output the best-performing model method and prediction accuracy.
 
-If `--all` is set, you need to add the `--type` parameter, followed by `sort` or `regression`, to complete the comparison of prediction accuracy for all models for quantitative or qualitative traits and output the average accuracy of the best-performing model.
 
 #### Candidate Group Prediction
 
@@ -448,7 +499,7 @@ If `--shap` or `--shap_beeswarm` is set, calculate and visualize the various typ
 
 According to the number of features specified by `--top_features`, generate feature importance diagrams or beeswarm diagrams, and save them to the path specified by `--output`.
 
-### Example Description
+#### Example Description
 
 Taking the genotype file and phenotype file as an example, a total of 1000 reference populations are illustrated here, with the first 10 samples of the file displayed. Let's assume the genotype file is as shown in the table below, using the ped file commonly used by PLINK as an example, named `geno.ped`.
 
