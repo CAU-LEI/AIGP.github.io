@@ -213,9 +213,13 @@ Below is a summary of all parameters in AIGP:
 --model_path: Path to a pre-trained model file, used for candidate population prediction.
 --geno_cal：Computes genotype data statistics (e.g., missing rate, allele frequency, MAF). Results are saved as a CSV file (geno_stats.csv).
 --phe_cal：Computes phenotype data statistics (e.g., mean, standard deviation) and generates a phenotype distribution plot (phe_distribution.png).
---importance：Outputs feature importance after model training. Supports PNG and CSV output formats (only for models with built-in feature importance attributes such as feature_importances_ or coef_).
---n_jobs：Number of parallel computing threads used for GridSearchCV, cross-validation, and SSA search. Default is 1.
---gpu：Enables GPU training (if the model supports GPU acceleration). The default is CPU.
+--importance：Outputs feature importance after model training. Supports PNG and CSV output formats (only for models with built-in feature importance attributes such as feature_importances_ or coef_). (optional)
+--n_jobs：Number of parallel computing threads used for GridSearchCV, cross-validation, and SSA search. Default is 1. (optional)
+--gpu：Enables GPU training (if the model supports GPU acceleration). The default is CPU. (optional)
+--geno_cal：Computes genotypic data statistics, including missing rate, allele frequency, and minor allele frequency (MAF). (optional)
+--phe_cal：Computes phenotypic data statistics, such as mean and standard deviation, and generates a phenotype distribution plot. (optional)
+--n_jobs：Uses n threads for parallel computation to improve training and hyperparameter tuning speed. (optional)
+
 ```
 
 ### For Qualitative Trait Classification Models:
@@ -412,7 +416,7 @@ All detailed parameters for each model can be found in the Scikit-Learn document
 | 20   | 0    | 160  | 127  |
 | 20   | 0    | 156  | 96   |
 
-- Taking the genotype file as `test_geno.ped` and the phenotype file as `test_phe`, the third column of the `test_phe` file is the true phenotypic value for model evaluation. At this point, `--geno` is followed by the location of the genotype file, `--phe` is followed by the location of the phenotype file, `--x_sep` is followed by the separator of the genotype file, and `--y_sep` is followed by the separator in the phenotype file. `--y_col_num` specifies the column number of the phenotype file. When cross-validation is not used, the proportion of the sample training population and the validation population is specified by `--train_size`. When the trait is a quantitative trait, specify `--type` as `regression`, and when it is a qualitative trait, specify `--type` as `sort`. `--model` is followed by the method of the model, and all methods are detailed in Section 4. When using the `LinearRegression` method, and using the third column as the training phenotypic value, the command is as follows:
+- Taking the genotype file as `test_geno.ped` and the phenotype file as `test_phe`, the third column of the `test_phe` file is the true phenotypic value for model evaluation. At this point, `--geno` is followed by the location of the genotype file, `--phe` is followed by the location of the phenotype file, `--geno_sep` is followed by the separator of the genotype file, and `--phe_sep` is followed by the separator in the phenotype file. `--phe_col_num` specifies the column number of the phenotype file. When cross-validation is not used, the proportion of the sample training population and the validation population is specified by `--train_size`. When the trait is a quantitative trait, specify `--type` as `regression`, and when it is a qualitative trait, specify `--type` as `sort`. `--model` is followed by the method of the model, and all methods are detailed in Section 4. When using the `LinearRegression` method, and using the third column as the training phenotypic value, the command is as follows:
 
 ```shell
 AIGP train.py --geno data/test_geno.ped --x_sep \t --phe data/test_phe.txt --y_sep \s --y_col_num 3 --type regression --model LinearRegression --train_size 0.8
@@ -483,7 +487,7 @@ For quantitative traits, the following can be used:
 
 `--cv` based on the number of folds set by `--cv` for model training and evaluation. If `--cv` is not set, only one training is performed. You need to specify `--train_size` or `--ntest`, and you only need to choose one of `--train_size` and `--ntest`. When `--train_size` is set to 0.8, 4/5 of the reference population is used for training and 1/5 is used for evaluating prediction accuracy. If `--ntest` is set, the first n samples are used as the training population.
 
-If using grid search (`--Grid`), you need to use the `--Grid` parameter, and grid search tuning will be performed according to the parameters specified by `--Grid_model_params`.
+If using grid search (`--grid`), you need to use the `--grid` parameter, and grid search tuning will be performed according to the parameters specified by `--Grid_model_params`.
 
 If using SSA search (`--ssa`), you need to use the `--ssa_model_params` parameter, and SSA search tuning will be performed according to the parameters specified by `--ssa_model_params`.
 
@@ -537,6 +541,7 @@ Usage Examples
 
 ```shell
 AIGP --geno data/geno.ped --phe data/phe.csv --y_sep , --y_col_num 3 --type regression --model LinearRegression --train_size 0.8
+
 ```
 
 **2. Train a classification model and use PCA for dimensionality reduction (n=10):**
@@ -557,22 +562,24 @@ AIGP --geno data/geno.ped --phe data/phe.csv --y_sep , --y_col_num 3 --type regr
 AIGP --geno data/geno.ped --phe data/phe.csv --y_sep , --y_col_num 3 --type sort --model CatBoostClassifier --category_cols 1,2 --cv 5
 ```
 
-**5. In quantitative traits, calculate and save SHAP values and beeswarm plots, take the top 10 features, and specify the output path to the shap_outputs folder:**
+**5. Train an LGBMRegressor regression model, compute SHAP values, generate a SHAP beeswarm plot, and select the top 10 important features, with the results saved in the shap_outputs/ directory. The first 500 samples from the genotype file are used as the training set.**
 
 ```shell
-AIGP --geno data/geno.ped --phe data/phe.csv --y_sep , --y_col_num 3 --type regression --model LGBMRegressor --shap --shap_beeswarm --top_features 10 --output shap_outputs/ --cv 5
+AIGP --geno data/geno.ped --phe data/phe.csv --y_sep , --y_col_num 3 --type regression --model LGBMRegressor --shap --shap_beeswarm --top_features 10 --output shap_outputs/ --n_test 500
 ```
 
-**6. Train all models at once and output the name of the best-performing model and its corresponding accuracy. When the phenotype is a quantitative trait, add `regression` after `--type`, and when it is a qualitative trait, add `sort`:**
+**6. By adding the --importance parameter to the previous command, the model will output feature importance after training. This helps in identifying which features have the greatest influence on model predictions.Additionally, --geno_cal and --phe_cal are used to compute genotypic and phenotypic statistics, while --n_jobs 4 enables parallel computing with 4 threads to improve processing speed.**
 
 ```shell
-AIGP --geno data/geno.ped --phe data/phe.csv --y_sep , --y_col_num 3 --all --type regression --shap --shap_beeswarm --top_features 50 --output shap_outputs/ --cv 5
+AIGP --geno data/test_x.txt --geno_sep "\t" --phe data/test_y.txt --phe_sep "\s" --phe_col_num 1 --type sort --model LogisticRegression --dim_reduction pca --n_components 20 --grid --grid_model_params "{\"fit_intercept\": [true, false], \"C\": [1.0, 100]}" --geno_cal --phe_cal --n_jobs 4 --importance 
+
 ```
 
-**7. After evaluating the prediction accuracy in the reference population, predict the candidate population. At this point, `--geno` is followed by the genotype file of the candidate population, and `--model_path` specifies the model weights trained with the reference population. There is no need to specify the phenotype column at this time; if covariates are to be included, specify the column numbers of the covariates in the phenotype file. The output will be the predicted results for the candidate population.**
+**7. Uses a pre-trained model to predict the candidate population. The --geno parameter specifies the genotype file of the candidate population, while --model_path provides the saved model weights trained on the reference population. The --category_cols parameter allows for the inclusion of covariates in the prediction process. The output will be the predicted results for the candidate population.**
 
 ```shell
-AIGP predict.py --geno data/geno.ped -phe data/phe.csv --y_sep , --category_cols 1,2 --model_path checkpoints/LinearRegression_general_20231027.m
+AIGP --predict --geno data/candidate_x.txt --geno_sep "\t" --phe data/candidate_covariates.txt --phe_sep "\s" --category_cols 1,2 --model_path checkpoints/LinearRegression_general_20231027.m
+
 ```
 
 
