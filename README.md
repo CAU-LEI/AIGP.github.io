@@ -399,48 +399,32 @@ All detailed parameters for each model can be found in the Scikit-Learn document
 
 - Genotype files support formats such as vcf and ped. For genomic files, it is recommended that users perform genotype imputation themselves. When the imputed genotype files are ready, place all phenotypic values and covariates in the same file as shown in the table below, with the first and second columns as fixed effects and the third and fourth columns as phenotypic values. Specify the separator.
 
-| 20   | 0    | 160  | 119  |
-| ---- | ---- | ---- | ---- |
-| 20   | 0    | 161  | 119  |
-| 20   | 0    | 161  | 117  |
-| 20   | 0    | 161  | 110  |
-| 20   | 0    | 165  | 101  |
-| 20   | 0    | 157  | 130  |
-| 20   | 0    | 155  | 121  |
-| 20   | 0    | 154  | 124  |
-| 20   | 0    | 160  | 124  |
-| 20   | 0    | 158  | 103  |
-| 20   | 0    | 164  | 112  |
-| 20   | 0    | 166  | 85   |
-| 20   | 0    | 158  | 112  |
-| 20   | 0    | 160  | 127  |
-| 20   | 0    | 156  | 96   |
 
 - Taking the genotype file as `test_geno.ped` and the phenotype file as `test_phe`, the third column of the `test_phe` file is the true phenotypic value for model evaluation. At this point, `--geno` is followed by the location of the genotype file, `--phe` is followed by the location of the phenotype file, `--geno_sep` is followed by the separator of the genotype file, and `--phe_sep` is followed by the separator in the phenotype file. `--phe_col_num` specifies the column number of the phenotype file. When cross-validation is not used, the proportion of the sample training population and the validation population is specified by `--train_size`. When the trait is a quantitative trait, specify `--type` as `regression`, and when it is a qualitative trait, specify `--type` as `sort`. `--model` is followed by the method of the model, and all methods are detailed in Section 4. When using the `LinearRegression` method, and using the third column as the training phenotypic value, the command is as follows:
 
 ```shell
-AIGP train.py --geno data/test_geno.ped --x_sep \t --phe data/test_phe.txt --y_sep \s --y_col_num 3 --type regression --model LinearRegression --train_size 0.8
+AIGP --geno data/test_geno.ped --x_sep \t --phe data/test_phe.txt --y_sep \s --y_col_num 3 --type regression --model LinearRegression --train_size 0.8
 ```
 
 When using the first and second columns of the `test_phe` file as covariates, `--cateogry_cols` is followed by `12`, specifying the column number of the fixed effects, such as multiple columns are separated by spaces. The command is as follows:
 
 ```shell
-AIGP train.py --geno data/test_geno.ped --x_sep \t --phe data/test_phe.txt --y_sep \s --y_col_num 3 --type regression --model LinearRegression --category_cols 12
+AIGP --geno data/test_geno.ped --x_sep \t --phe data/test_phe.txt --y_sep \s --y_col_num 3 --type regression --model LinearRegression --category_cols 12
 ```
 
 ### Detailed Tutorial
 
 #### Reading Data
 
-- `--x`: Path to the input feature data file `--y`: Path to the input label data file. Parameters `--x_sep` and `--y_sep` are used to specify the separators for the genotype and phenotype files. When used, fixed effects and phenotypic traits are placed in the same file, and a separator is chosen. If `--cateogry_cols` is set, the specified columns are treated as fixed effect variables, separated by commas if multiple. `--y_col_num` specifies the column index of the phenotypic value. `--cateogry_cols`: Specifies the column index of fixed effect variables.
+- `--geno`: Path to the input feature data file `--phe`: Path to the input label data file. Parameters `--geno_sep` and `--phe_sep` are used to specify the separators for the genotype and phenotype files. When used, fixed effects and phenotypic traits are placed in the same file, and a separator is chosen. If `--cateogry_cols` is set, the specified columns are treated as fixed effect variables, separated by commas if multiple. `--phe_col_num` specifies the column index of the phenotypic value. `--cateogry_cols`: Specifies the column index of fixed effect variables.
 
 #### Genotype Data Preprocessing
 
-- The genotype data preprocessing module includes functions such as extracting genotype data for specified sample IDs and SNP IDs, displaying SNP missing rates and heterozygosity rates in histogram form, and genotype re-encoding. It provides data and acceptable file formats for downstream analysis of the program. Currently, AIGP supports genotype file inputs in ped, vcf, and txt formats. If in ped and vcf formats, standard plink format input is required. If in txt format, input must follow the format below. Each line represents a sample, and columns represent typed SNP loci. There are no index columns or header rows. Parameter `--process_x` is used to preprocess the genotype file.
+- The genotype data preprocessing module includes functions such as extracting genotype data for specified sample IDs and SNP IDs, displaying SNP missing rates and heterozygosity rates in histogram form, and genotype re-encoding. It provides data and acceptable file formats for downstream analysis of the program. Currently, AIGP supports genotype file inputs in ped, vcf, and txt formats. If in ped and vcf formats, standard plink format input is required. Each line represents a sample, and columns represent typed SNP loci. There are no index columns or header rows. Parameter `--geno_cal` is used to preprocess the genotype file.
 
 #### Phenotype Data Preprocessing
 
-- Parameter `--process_y` is used for preprocessing the phenotype file. For quantitative traits, it checks for missing phenotypic values, and if missing, it automatically deletes the corresponding rows and samples of the genotype. It also visualizes the distribution histogram of phenotypic values.
+- Parameter `--phe_cal` is used for preprocessing the phenotype file. For quantitative traits, it checks for missing phenotypic values, and if missing, it automatically deletes the corresponding rows and samples of the genotype. It also visualizes the distribution histogram of phenotypic values.
 
 #### Feature Engineering Dimensionality Reduction
 
@@ -490,7 +474,6 @@ For quantitative traits, the following can be used:
 If using grid search (`--grid`), you need to use the `--grid` parameter, and grid search tuning will be performed according to the parameters specified by `--Grid_model_params`.
 
 If using SSA search (`--ssa`), you need to use the `--ssa_model_params` parameter, and SSA search tuning will be performed according to the parameters specified by `--ssa_model_params`.
-
 
 
 #### Candidate Group Prediction
