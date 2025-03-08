@@ -1,31 +1,36 @@
-shen# ABGP Software Manual Directory
+shen# AIGP Software Manual Directory
 
 [TOC]
-![ABGP](ABGP.png)
+![AIGP](AIGP.png)
 
-- # 1. Introduction to ABGP
+
+# AIGP Software Manual Directory
+
+[TOC]
+
+- # 1. Introduction to AIGP
 
   ------
 
   With the advancement of sequencing technologies and the emergence of high-throughput genomic data, breeding practices are transitioning from traditional "empirical breeding" to "precision breeding". Artificial intelligence (AI) algorithms, which do not require predefined rules, excel at learning from data and features, fitting complex nonlinear relationships within the data. This capability gives them an edge in handling vast amounts of genomic data. The application of AI algorithms in genomic prediction is crucial for enhancing the accuracy of breeding value estimation for key phenotypes, accelerating genetic progress, and streamlining the breeding process.
 
-  Artificial Intelligence Breeding Pipeline (ABGP) is an AI breeding software that integrates feature selection, model building, speed optimization, parameter tuning, and locus interpretability. It can process data under various supervised learning conditions, including but not limited to genomics, transcriptomics, and methylation data. ABGP can incorporate prior information, seasonal effects, gender, batch, and other covariate information, and it encompasses a variety of AI algorithm models for both qualitative and quantitative traits. It supports CPU and GPU computations, along with multi-process, multi-threading, optimization iteration, grid search, sparrow search, and SNP locus interpretability analysis modules.
+  Artificial Intelligence Breeding Pipeline (AIGP) is an AI breeding software that integrates feature selection, model building, speed optimization, parameter tuning, and locus interpretability. It can process data under various supervised learning conditions, including but not limited to genomics, transcriptomics, and methylation data. AIGP can incorporate prior information, seasonal effects, gender, batch, and other covariate information, and it encompasses a variety of AI algorithm models for both qualitative and quantitative traits. It supports CPU and GPU computations, along with multi-process, multi-threading, optimization iteration, grid search, sparrow search, and SNP locus interpretability analysis modules.
 
   The software features include:
 
-  1.大幅提升预测速度：ABGP supports accelerated data reading and GPU model training, which is particularly effective when dealing with large-scale data.
-  2.灵活性和适应性：ABGP methods can handle different types of data and tasks, including regression, classification, and data with complex nonlinear relationships, including but not limited to genomic, transcriptomic, and metabolomic data.
-  3.非线性拟合优化：ABGP can automatically perform feature selection and evaluate feature importance through methods such as SHAP (SHapley Additive exPlanations), providing an in-depth understanding and interpretation of prediction results.
-  4.高性能和精度预测：By using advanced models, the precision and performance of predictions can be significantly improved. These models demonstrate excellent performance in handling large-scale data and complex models through efficient gradient boosting techniques.
-  5.自动化调参：ABGP software integrates grid search and intelligent algorithms for automated parameter tuning, ensuring the best model performance on different datasets, which is more efficient than manual parameter tuning in the GBLUP method.
-  6.协变量处理：ABGP can directly process categorical variables in the data, automatically encoding and processing them, while traditional GBLUP methods are more complex when dealing with categorical variables, requiring additional preprocessing steps.
+  1.**Significant Improvement in Prediction Speed**:AIGP supports accelerated data reading and GPU model training, which is particularly effective when dealing with large-scale data.
+  2.**Flexibility and Adaptability**:AIGP methods can handle different types of data and tasks, including regression, classification, and data with complex nonlinear relationships, including but not limited to genomic, transcriptomic, and metabolomic data.
+  3.**Nonlinear Fitting Optimization**:AIGP can automatically perform feature selection and evaluate feature importance through methods such as SHAP (SHapley Additive exPlanations), providing an in-depth understanding and interpretation of prediction results.
+  4.**High Performance and Precision Prediction**:By using advanced models, the precision and performance of predictions can be significantly improved. These models demonstrate excellent performance in handling large-scale data and complex models through efficient gradient boosting techniques.
+  5.**Automated Hyperparameter Tuning**:AIGP software integrates grid search and intelligent algorithms for automated parameter tuning, ensuring the best model performance on different datasets, which is more efficient than manual parameter tuning in the GBLUP method.
+  6.**Covariate Handling**:AIGP can directly process categorical variables in the data, automatically encoding and processing them, while traditional GBLUP methods are more complex when dealing with categorical variables, requiring additional preprocessing steps.
 
-  In addition, ABGP enhances prediction accuracy through various parameter optimization methods such as sparrow search and can mine SNP loci related to phenotypes based on the weight of SNPs in the model. By assessing the importance of SNP loci through various methods, generally, the greater the weight of the SNP locus, the stronger its correlation with the phenotype. The software outputs model interpretability through SHAP theory, including custom selection of feature loci for importance ranking, local and global interactive explanations based on single samples, multiple samples combined with features, and visualization display. Users can customize the interaction between different features and samples for further research. It is recommended that users compare the weights of various SNPs provided by different methods of ABGP with GWAS results for reference, to exclude false positive results from each method and increase credibility.
+  In addition, AIGP enhances prediction accuracy through various parameter optimization methods such as sparrow search and can mine SNP loci related to phenotypes based on the weight of SNPs in the model. By assessing the importance of SNP loci through various methods, generally, the greater the weight of the SNP locus, the stronger its correlation with the phenotype. The software outputs model interpretability through SHAP theory, including custom selection of feature loci for importance ranking, local and global interactive explanations based on single samples, multiple samples combined with features, and visualization display. Users can customize the interaction between different features and samples for further research. It is recommended that users compare the weights of various SNPs provided by different methods of AIGP with GWAS results for reference, to exclude false positive results from each method and increase credibility.
 
-  ABGP has shown strong advantages in meeting the needs of genomic data analysis in the era of big data, capable of efficiently and accurately predicting and analyzing large-scale data. It provides new tools and software platforms for AI breeding and digitalization.
+  AIGP has shown strong advantages in meeting the needs of genomic data analysis in the era of big data, capable of efficiently and accurately predicting and analyzing large-scale data. It provides new tools and software platforms for AI breeding and digitalization.
 
-  **Source Code Address: [https://github.com/ABGP](https://github.com/ABGP)**  
-  **Additional Data: [https://github.com/ABGP/data](https://github.com/ABGP/data)**  
+  **Source Code Address: [https://github.com/AIGP](https://github.com/AIGP)**  
+  **Additional Data: [https://github.com/AIGP/data](https://github.com/AIGP/data)**  
   **Contact Us: leiwei@cau.edu.cn***
 
   - **Note: The software is for academic use only, commercial use requires prior contact with us. The right to interpretation belongs to the National Key Laboratory of Animal and Poultry Breeding**
@@ -39,8 +44,8 @@ shen# ABGP Software Manual Directory
 Clone the project's GitHub repository to your local machine. Open the terminal and execute the following command:
 
 ```shell
-git clone https://github.com/leiweiucas/ABGP
-cd ABGP
+git clone https://github.com/leiweiucas/AIGP
+cd AIGP
 ```
 
 ### Create a Virtual Environment
@@ -56,8 +61,8 @@ venv\Scripts\activate  # Windows
 ### Create a Virtual Environment with conda:
 
 ```shell
-conda create --name ABGP_env python=3.8
-conda activate ABGP
+conda create --name AIGP_env python=3.8
+conda activate AIGP
 ```
 
 ### Install Dependencies
@@ -83,7 +88,7 @@ shap==0.39.0
 joblib==1.1.0
 ```
 
-**PLINK Installation** ABGP software has a built-in plink module. After downloading the plink software, on Linux or macOS, edit the ~/.bashrc or ~/.zshrc file:
+**PLINK Installation** AIGP software has a built-in plink module. After downloading the plink software, on Linux or macOS, edit the ~/.bashrc or ~/.zshrc file:
 
 ```shell
 export PATH=$PATH:/path/to/plink
@@ -103,7 +108,7 @@ In the preprocessing of phenotypic files, the module checks for missing phenotyp
 
 ### Feature Engineering
 
-In the processing of genotype and phenotype data, feature engineering can effectively reduce data dimensions, decrease computational complexity, and retain key information from the data. The ABGP software supports two dimensionality reduction methods: PCA (Principal Component Analysis) and PHATE (Potential of Heat-diffusion for Affinity-based Transition Embedding).
+In the processing of genotype and phenotype data, feature engineering can effectively reduce data dimensions, decrease computational complexity, and retain key information from the data. The AIGP software supports two dimensionality reduction methods: PCA (Principal Component Analysis) and PHATE (Potential of Heat-diffusion for Affinity-based Transition Embedding).
 
 **PCA (Principal Component Analysis)** is a common dimensionality reduction technique that maps high-dimensional data to a low-dimensional space through orthogonal transformation, preserving the main information in the data. The main advantage of PCA is its ability to reduce data dimensions while retaining variance information, thereby simplifying model complexity and improving computational efficiency.
 
@@ -111,23 +116,23 @@ In the processing of genotype and phenotype data, feature engineering can effect
 
 ### Model Training
 
-The software supports a variety of machine learning models suitable for predicting both qualitative and quantitative traits. For qualitative traits, there are 10 different machine learning models, and for quantitative traits, there are 11 different machine learning models. The training methods included in ABGP are categorized into four types, including nonlinear methods based on feature distances, linear methods, and bagging/boosting algorithms. For quantitative traits, nonlinear methods include k-nearest neighbors (knn) and support vector machines (svm), linear methods include Linear Regression, Ridge Regression, and ElasticNet, and bagging methods include Random Forest (RF). Boosting algorithms include gradient boosting trees, xgboost, catboost, lightgbm, and catboost. For qualitative traits, nonlinear methods include knn and svm, linear methods include logistic regression, bagging methods include RF, and decision tree algorithms. Boosting algorithms include gradient boosting trees, xgboost, catboost, lightgbm, and catboost.
+The software supports a variety of machine learning models suitable for predicting both qualitative and quantitative traits. For qualitative traits, there are 10 different machine learning models, and for quantitative traits, there are 11 different machine learning models. The training methods included in AIGP are categorized into four types, including nonlinear methods based on feature distances, linear methods, and bagging/boosting algorithms. For quantitative traits, nonlinear methods include k-nearest neighbors (knn) and support vector machines (svm), linear methods include Linear Regression, Ridge Regression, and ElasticNet, and bagging methods include Random Forest (RF). Boosting algorithms include gradient boosting trees, xgboost, catboost, lightgbm, and catboost. For qualitative traits, nonlinear methods include knn and svm, linear methods include logistic regression, bagging methods include RF, and decision tree algorithms. Boosting algorithms include gradient boosting trees, xgboost, catboost, lightgbm, and catboost.
 
 Users can select the appropriate model for training based on specific needs and optimize parameters using various methods to achieve the best performance.
 
 ### Model Evaluation
 
-In ABGP, for qualitative traits, accuracy is used as the evaluation metric. For quantitative traits, the Pearson correlation coefficient between predicted and actual values is used as the evaluation standard. When cross-validation is employed, the average value from the cross-validation is used as the accuracy evaluation standard.
+In AIGP, for qualitative traits, accuracy is used as the evaluation metric. For quantitative traits, the Pearson correlation coefficient between predicted and actual values is used as the evaluation standard. When cross-validation is employed, the average value from the cross-validation is used as the accuracy evaluation standard.
 
 ### Model Interpretability
 
-In machine learning models, explaining the prediction results is crucial for understanding model behavior and building trust. SHAP (SHapley Additive exPlanations) is a game-theoretic method for explaining model outputs. It calculates the contribution of each feature to the prediction result, providing both global and local interpretability. The ABGP software integrates various functions of SHAP to analyze and interpret the importance of model features and samples, as well as their contributions to phenotypes.
+In machine learning models, explaining the prediction results is crucial for understanding model behavior and building trust. SHAP (SHapley Additive exPlanations) is a game-theoretic method for explaining model outputs. It calculates the contribution of each feature to the prediction result, providing both global and local interpretability. The AIGP software integrates various functions of SHAP to analyze and interpret the importance of model features and samples, as well as their contributions to phenotypes.
 
 # 4. Parameter Introduction
 
 ------
 
-Below is a summary of all parameters in ABGP:
+Below is a summary of all parameters in AIGP:
 
 ```shell
 --geno: Path to the input feature data file (required)
@@ -357,13 +362,13 @@ Genotype files support formats such as vcf and ped. For genomic files, it is rec
 Taking the genotype file as `test_geno.ped` and the phenotype file as `test_phe`, the third column of the `test_phe` file is the true phenotypic value for model evaluation. At this point, `--geno` is followed by the location of the genotype file, `--phe` is followed by the location of the phenotype file, `--x_sep` is followed by the separator of the genotype file, and `--y_sep` is followed by the separator in the phenotype file. `--y_col_num` specifies the column number of the phenotype file. When cross-validation is not used, the proportion of the sample training population and the validation population is specified by `--train_size`. When the trait is a quantitative trait, specify `--type` as `regression`, and when it is a qualitative trait, specify `--type` as `sort`. `--model` is followed by the method of the model, and all methods are detailed in Section 4. When using the `LinearRegression` method, and using the third column as the training phenotypic value, the command is as follows:
 
 ```shell
-ABGP train.py --geno data/test_geno.ped --x_sep \t --phe data/test_phe.txt --y_sep \s --y_col_num 3 --type regression --model LinearRegression --train_size 0.8
+AIGP train.py --geno data/test_geno.ped --x_sep \t --phe data/test_phe.txt --y_sep \s --y_col_num 3 --type regression --model LinearRegression --train_size 0.8
 ```
 
 When using the first and second columns of the `test_phe` file as covariates, `--cateogry_cols` is followed by `12`, specifying the column number of the fixed effects, such as multiple columns are separated by spaces. The command is as follows:
 
 ```shell
-ABGP train.py --geno data/test_geno.ped --x_sep \t --phe data/test_phe.txt --y_sep \s --y_col_num 3 --type regression --model LinearRegression --category_cols 12
+AIGP train.py --geno data/test_geno.ped --x_sep \t --phe data/test_phe.txt --y_sep \s --y_col_num 3 --type regression --model LinearRegression --category_cols 12
 ```
 
 ### Detailed Tutorial
@@ -374,7 +379,7 @@ ABGP train.py --geno data/test_geno.ped --x_sep \t --phe data/test_phe.txt --y_s
 
 #### Genotype Data Preprocessing
 
-The genotype data preprocessing module includes functions such as extracting genotype data for specified sample IDs and SNP IDs, displaying SNP missing rates and heterozygosity rates in histogram form, and genotype re-encoding. It provides data and acceptable file formats for downstream analysis of the program. Currently, ABGP supports genotype file inputs in ped, vcf, and txt formats. If in ped and vcf formats, standard plink format input is required. If in txt format, input must follow the format below. Each line represents a sample, and columns represent typed SNP loci. There are no index columns or header rows. Parameter `--process_x` is used to preprocess the genotype file.
+The genotype data preprocessing module includes functions such as extracting genotype data for specified sample IDs and SNP IDs, displaying SNP missing rates and heterozygosity rates in histogram form, and genotype re-encoding. It provides data and acceptable file formats for downstream analysis of the program. Currently, AIGP supports genotype file inputs in ped, vcf, and txt formats. If in ped and vcf formats, standard plink format input is required. If in txt format, input must follow the format below. Each line represents a sample, and columns represent typed SNP loci. There are no index columns or header rows. Parameter `--process_x` is used to preprocess the genotype file.
 
 #### Phenotype Data Preprocessing
 
@@ -435,7 +440,7 @@ If `--all` is set, you need to add the `--type` parameter, followed by `sort` or
 
 #### Candidate Group Prediction
 
-ABGP software, combined with the actual breeding field requirements, has added candidate group prediction and ranking work. After the reference group population has been evaluated for prediction accuracy, a file with the suffix `.m` will be generated. At this point, you can use the weights trained in the reference group to predict the candidate group. At this time, `--geno` should be followed by the path to the candidate group's genotype file, and `--model_path` should specify the model parameter file trained with the reference group.
+AIGP software, combined with the actual breeding field requirements, has added candidate group prediction and ranking work. After the reference group population has been evaluated for prediction accuracy, a file with the suffix `.m` will be generated. At this point, you can use the weights trained in the reference group to predict the candidate group. At this time, `--geno` should be followed by the path to the candidate group's genotype file, and `--model_path` should specify the model parameter file trained with the reference group.
 
 #### Feature Importance Analysis
 
@@ -480,43 +485,43 @@ Usage Examples
 **1.Train a regression model:**
 
 ```shell
-abgp --geno data/geno.ped --phe data/phe.csv --y_sep , --y_col_num 3 --type regression --model LinearRegression --train_size 0.8
+AIGP --geno data/geno.ped --phe data/phe.csv --y_sep , --y_col_num 3 --type regression --model LinearRegression --train_size 0.8
 ```
 
 **2. Train a classification model and use PCA for dimensionality reduction (n=10):**
 
 ```shell
-abgp --geno data/geno.ped --x_sep , --y data/phe.csv --y_sep , --y_col_num 3 --type sort --dim_reduction pca --n_components 10 --model LogisticRegression --train_size 0.8
+AIGP --geno data/geno.ped --x_sep , --y data/phe.csv --y_sep , --y_col_num 3 --type sort --dim_reduction pca --n_components 10 --model LogisticRegression --train_size 0.8
 ```
 
 **3. Perform grid search and five-fold cross-validation:**
 
 ```shell
-abgp --geno data/geno.ped --phe data/phe.csv --y_sep , --y_col_num 3 --type regression --model LinearRegression --grid true --grid_model_params '{"fit_intercept": [true, false]}' --cv 5
+AIGP --geno data/geno.ped --phe data/phe.csv --y_sep , --y_col_num 3 --type regression --model LinearRegression --grid true --grid_model_params '{"fit_intercept": [true, false]}' --cv 5
 ```
 
 **4. In qualitative traits, handle covariates and train a CatBoost model:**
 
 ```shell
-abgp --geno data/geno.ped --phe data/phe.csv --y_sep , --y_col_num 3 --type sort --model CatBoostClassifier --category_cols 1,2 --cv 5
+AIGP --geno data/geno.ped --phe data/phe.csv --y_sep , --y_col_num 3 --type sort --model CatBoostClassifier --category_cols 1,2 --cv 5
 ```
 
 **5. In quantitative traits, calculate and save SHAP values and beeswarm plots, take the top 10 features, and specify the output path to the shap_outputs folder:**
 
 ```shell
-abgp --geno data/geno.ped --phe data/phe.csv --y_sep , --y_col_num 3 --type regression --model LGBMRegressor --shap --shap_beeswarm --top_features 10 --output shap_outputs/ --cv 5
+AIGP --geno data/geno.ped --phe data/phe.csv --y_sep , --y_col_num 3 --type regression --model LGBMRegressor --shap --shap_beeswarm --top_features 10 --output shap_outputs/ --cv 5
 ```
 
 **6. Train all models at once and output the name of the best-performing model and its corresponding accuracy. When the phenotype is a quantitative trait, add `regression` after `--type`, and when it is a qualitative trait, add `sort`:**
 
 ```shell
-abgp --geno data/geno.ped --phe data/phe.csv --y_sep , --y_col_num 3 --all --type regression --shap --shap_beeswarm --top_features 50 --output shap_outputs/ --cv 5
+AIGP --geno data/geno.ped --phe data/phe.csv --y_sep , --y_col_num 3 --all --type regression --shap --shap_beeswarm --top_features 50 --output shap_outputs/ --cv 5
 ```
 
 **7. After evaluating the prediction accuracy in the reference population, predict the candidate population. At this point, `--geno` is followed by the genotype file of the candidate population, and `--model_path` specifies the model weights trained with the reference population. There is no need to specify the phenotype column at this time; if covariates are to be included, specify the column numbers of the covariates in the phenotype file. The output will be the predicted results for the candidate population.**
 
 ```shell
-abgp predict.py --geno data/geno.ped -phe data/phe.csv --y_sep , --category_cols 1,2 --model_path checkpoints/LinearRegression_general_20231027.m
+AIGP predict.py --geno data/geno.ped -phe data/phe.csv --y_sep , --category_cols 1,2 --model_path checkpoints/LinearRegression_general_20231027.m
 ```
 
 
