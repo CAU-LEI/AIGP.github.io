@@ -34,11 +34,21 @@
 
   AIGP has shown strong advantages in meeting the needs of genomic data analysis in the era of big data, capable of efficiently and accurately predicting and analyzing large-scale data. It provides new tools and software platforms for AI breeding and digitalization.
 
-  **Source Code Address: [https://github.com/CAU-LEI/AIGP]**  
-  **Additional Data: [https://github.com/CAU-LEI/AIGP/data](https://github.com/CAU-LEI/AIGP/data)**  
-  **Contact Us: leiwei@cau.edu.cn***
+**Soft Address:** [https://github.com/CAU-LEI/AIGP.github.io/tree/master](https://github.com/CAU-LEI/AIGP.github.io/tree/master)  
 
-  - **Note: The software is for academic use only, commercial use requires prior contact with us. The right to interpretation belongs to the National Key Laboratory of Animal and Poultry Breeding**
+**Additional Data:** [https://github.com/CAU-LEI/AIGP.github.io/tree/main/test_data](https://github.com/CAU-LEI/AIGP.github.io/tree/main/test_data)  
+
+**Contact Us:** [leiwei@cau.edu.cn](leiwei@cau.edu.cn)  
+
+**Note:** The software includes versions compatible with Linux and macOS command-line environments, as well as a Windows version with a graphical user interface for easier operation. However, we recommend using the Linux version when handling large-scale data for better performance.  
+
+
+
+- The software is for academic use only, commercial use requires prior contact with us. The right to interpretation belongs to the National Key Laboratory of Animal and Poultry Breeding.  
+
+
+
+
 
 # 2. Installation Guide
 
